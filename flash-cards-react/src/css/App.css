@@ -1,0 +1,18 @@
+html{
+  font-size: 12px;
+}
+
+.App{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+footer{
+  background-color: #000;
+  position: fixed;
+  bottom:0;
+  width: 100%;
+  display: flex;
+  height: 5em;
+}
