@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {Template, FlashCardData}  from './js/init';
 import FlashCards from './components/flashcards';
 
@@ -46,23 +47,46 @@ function App() {
     }
   ]
 
-  const editCard = (e)=>{
-    console.log(e)
+  const addCard = ()=>{
+    let cardType="flip";
+    let index = -1;
+    Template.cardTypes.forEach((e,i)=>{
+      console.log(e.type. cardType)
+      if(e.type==cardType) {
+        index = i;
+      }
+    })
+    cards.push(Template.cardTypes[index])
+    console.log(cards)
   }
 
-  const passCardData = (e)=>{
-    console.log(e)
+  const editCard = (index, face, text)=>{
+    let tempCards = JSON.parse(JSON.stringify(cards));
+
+    console.log(index, face, text)
+    if(face=="Front"){
+      tempCards[index].front.text = text;
+    }else{
+      tempCards[index].back.text = text;
+    }
+
+    cards = JSON.parse(JSON.stringify(tempCards));
+    console.log(cards)      
   }
 
+  const getCardData = (index) =>{
+    return cards[index];
+  }
 
   return (
     <div className="App">
       <header className="">
       
-
       </header>
       <main>
-        <FlashCards  cards={cards} editCard={editCard} passCardData={passCardData}/>        
+      <i id="addButton" onClick={addCard}>+</i>
+        <FlashCards cards={cards} editCard={editCard} getCardData={getCardData} />        
+        
       </main>
       <div><textarea value={JSON.stringify(cards)} readOnly /></div>
       <footer>
