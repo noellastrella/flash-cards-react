@@ -16,3 +16,21 @@ footer{
   display: flex;
   height: 5em;
 }
+
+#addButton{
+  font-size: 2em;
+  color: #FFF;
+  background-color: #000;
+  border: #CCC 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2em;
+  height: 2em;
+  font-weight: bold;
+  font-style: normal;
+}
+
+#addButton{
+  cursor: pointer;
+}
