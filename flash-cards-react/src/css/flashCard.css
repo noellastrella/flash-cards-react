@@ -1,22 +1,46 @@
-.flip-card{
-    width: 1em;
-    height: 1em;
+.flip-card-icon{
+    right: -1em;
+    top: 3px;
+}
+
+.icons{
+    width: 3em;
+    height: 3em;
     position: absolute;
-    right: 0px;
-    top: 0px;
+    transition: all .2s;
+    opacity: 0;
+}
+
+
+.trash-icon{
+    right: -1.5em;
+    bottom: 3em;
+}
+
+.flip-card-icon{
+    right: -1.5em;
+    top: 1em;
+    transform-style: preserve-3d;
+    opacity: 0;
+}
+
+ul#flashCardContainer li:hover .icons{
+    opacity: 1;
 }
 
 ul#flashCardContainer{
     list-style-type: none;
     padding:0;
     margin: 0;
-    transform-style: preserve-3d;
-    perspective: 800px;
     cursor: pointer;
     
 }
 
-li.flashCard{
+ul#flashCardContainer li{
+    transform-style: preserve-3d;
+    perspective: 1200px;
+}
+li .flashCard{
     width: 36em;
     height: 18em;
     margin: 2em;
@@ -34,15 +58,15 @@ li.flashCard{
     background-size: 100% 1.2em;
 }
 
-li.flashCard.flipped{
+li .flashCard.flipped{
     transform: rotateY(180deg);
 }
 
-li.flashCard *{
+li .flashCard *{
     backface-visibility: hidden;
 }
 
-li.flashCard .cardFront, li.flashCard .cardBack{
+li .flashCard .cardFront, li .flashCard .cardBack{
     display: block;
     width: 100%;
     height: 100%;
@@ -53,11 +77,11 @@ li.flashCard .cardFront, li.flashCard .cardBack{
     justify-content: center;
 }
 
-li.flashCard .cardFront{
+li .flashCard .cardFront{
 
 }
 
-li.flashCard .cardBack{
+li .flashCard .cardBack{
     background-color: #CCC;
     transform: rotateY(180deg);
 }

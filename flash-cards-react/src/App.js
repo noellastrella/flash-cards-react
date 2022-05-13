@@ -10,8 +10,13 @@ import SaveLoadWidget from './components/save-load-widget';
 
 function App() {
   let json = "";
+  let cardsArray = [];
 
-  let cards = [
+  const [cards, modifyCards] = React.useState(cardsArray);
+
+  
+
+  let cardsToAdd = [
     {
         id:-1,
         title: "Card 1",
@@ -47,6 +52,16 @@ function App() {
     }
   ]
 
+  React.useEffect(()=>{ loadCards(cardsToAdd) },[])
+  
+  const loadCards = (newCards)=>{
+    newCards.forEach(e=>{
+      console.log(e)
+      
+      modifyCards(cards=>[...cards,e])
+    })  
+  }
+
   const addCard = ()=>{
     let cardType="flip";
     let index = -1;
@@ -56,22 +71,29 @@ function App() {
         index = i;
       }
     })
-    cards.push(Template.cardTypes[index])
-    console.log(cards)
+    
+    modifyCards(cards=>[...cards,Template.cardTypes[index]])
   }
 
   const editCard = (index, face, text)=>{
     let tempCards = JSON.parse(JSON.stringify(cards));
 
-    console.log(index, face, text)
     if(face=="Front"){
       tempCards[index].front.text = text;
     }else{
       tempCards[index].back.text = text;
     }
 
-    cards = JSON.parse(JSON.stringify(tempCards));
-    console.log(cards)      
+    modifyCards(cards=>[]); //erase all cards
+    loadCards(tempCards); //reload cards    
+  }
+
+  const deleteCard = (index)=>{
+    let tempCards = JSON.parse(JSON.stringify(cards));
+    
+    tempCards.filter((e,i)=>{
+      return i!=index;
+    })
   }
 
   const getCardData = (index) =>{
@@ -80,13 +102,10 @@ function App() {
 
   return (
     <div className="App">
-      <header className="">
-      
-      </header>
+      <header className=""></header>
       <main>
       <i id="addButton" onClick={addCard}>+</i>
-        <FlashCards cards={cards} editCard={editCard} getCardData={getCardData} />        
-        
+        <FlashCards cards={cards} editCard={editCard} deleteCard={deleteCard} getCardData={getCardData} />        
       </main>
       <div><textarea value={JSON.stringify(cards)} readOnly /></div>
       <footer>
