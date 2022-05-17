@@ -13,8 +13,7 @@ function App() {
   let cardsArray = [];
 
   const [cards, modifyCards] = React.useState(cardsArray);
-
-  
+  const [fileName, setFileName] = React.useState('');
 
   let cardsToAdd = [
     {
@@ -96,6 +95,46 @@ function App() {
     })
   }
 
+  const saveFile = ()=>{
+
+    let a = document.createElement("a");
+        document.body.appendChild(a);
+
+        let save_btn = document.querySelector("#save");
+
+        let txt = JSON.stringify(cards);
+        //console.log(this.storydata)
+        
+        var file = new Blob([txt], {type: "text/plain;charset=utf-8"});
+        var url = window.URL.createObjectURL(file);
+        
+        a.href = url;
+        a.download = fileName;    
+        a.click();
+        window.URL.revokeObjectURL(url);
+  }
+
+  const loadFile = (e)=>{
+    
+    let reader;
+    reader = new FileReader();
+
+    reader.onload = function(e2){
+        loadData(e2);
+    }
+
+    function loadData(e2){
+        console.log(e2.target.result)
+        
+        let newCards= JSON.parse(e2.target.result)
+        modifyCards(cards=>[...newCards])
+      
+        setFileName(e.target.files[0].name);
+    }
+    console.log(e)
+    reader.readAsText(e.target.files[0]);
+  }
+
   const getCardData = (index) =>{
     return cards[index];
   }
@@ -109,7 +148,7 @@ function App() {
       </main>
       <div><textarea value={JSON.stringify(cards)} readOnly /></div>
       <footer>
-        <SaveLoadWidget />
+        <SaveLoadWidget saveCB={saveFile} loadCB={loadFile} fileName = {fileName} setFileName={setFileName} />
       </footer>
     </div>
   );
