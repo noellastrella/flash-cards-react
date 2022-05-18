@@ -101,7 +101,7 @@ function App() {
         document.body.appendChild(a);
 
         let save_btn = document.querySelector("#save");
-
+        let theFileName = fileName? fileName: "flashcards.cards"
         let txt = JSON.stringify(cards);
         //console.log(this.storydata)
         
@@ -109,7 +109,8 @@ function App() {
         var url = window.URL.createObjectURL(file);
         
         a.href = url;
-        a.download = fileName;    
+        
+        a.download = theFileName;    
         a.click();
         window.URL.revokeObjectURL(url);
   }
