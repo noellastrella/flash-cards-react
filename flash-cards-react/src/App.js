@@ -55,8 +55,6 @@ function App() {
   
   const loadCards = (newCards)=>{
     newCards.forEach(e=>{
-      console.log(e)
-      
       modifyCards(cards=>[...cards,e])
     })  
   }
@@ -65,7 +63,7 @@ function App() {
     let cardType="flip";
     let index = -1;
     Template.cardTypes.forEach((e,i)=>{
-      console.log(e.type. cardType)
+      //console.log(e.type. cardType)
       if(e.type==cardType) {
         index = i;
       }
@@ -103,7 +101,6 @@ function App() {
         let save_btn = document.querySelector("#save");
         let theFileName = fileName? fileName: "flashcards.cards"
         let txt = JSON.stringify(cards);
-        //console.log(this.storydata)
         
         var file = new Blob([txt], {type: "text/plain;charset=utf-8"});
         var url = window.URL.createObjectURL(file);
@@ -125,14 +122,14 @@ function App() {
     }
 
     function loadData(e2){
-        console.log(e2.target.result)
+        
         
         let newCards= JSON.parse(e2.target.result)
         modifyCards(cards=>[...newCards])
       
         setFileName(e.target.files[0].name);
     }
-    console.log(e)
+    
     reader.readAsText(e.target.files[0]);
   }
 

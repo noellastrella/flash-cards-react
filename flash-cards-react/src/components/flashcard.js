@@ -26,7 +26,6 @@ function FlashCard(props){
     let cardFront = props.getCardData(props.index).front.text;
     let cardBack = props.getCardData(props.index).back.text;
 
-    console.log(props.getCardData(props.index))
     return(
         <li>
             <section className={`flashCard ${cardStyle}`}  >
