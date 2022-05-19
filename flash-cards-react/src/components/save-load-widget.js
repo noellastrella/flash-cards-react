@@ -8,15 +8,20 @@ function SaveLoadWidget(props){
     //mock data
 
     const saveData = (e)=>{
+        
+        console.log(e, "save");
         props.saveCB()
     };
 
     const loadData = (e)=>{
+        console.log(e, "load");
         props.loadCB(e)
     };
 
 
     const handleChange=(e)=>{
+        
+        console.log(e)
         props.setFileName(e);
     }
 
@@ -24,10 +29,10 @@ function SaveLoadWidget(props){
     return(
         <section >
             <div id="save-load-container">
-            <input type="text" placeholder="filename.cards" value={props.fileName} onChange={e=>handleChange(e.target.value)}/>
+                <div>SAVE LOAD WIDGET</div>
                 <button id="save-button" onClick={saveData}>SAVE</button>
-                
-                <span> | Load Flash Cards </span><input type="file" id="load-button" onChange={loadData} value="" />
+                <input type="text" placeholder="filename.cards" value={props.fileName} onChange={e=>handleChange(e.target.value)}/>
+                <input type="file" id="load-button" onChange={loadData} value="" />
             </div>
 
         </section>

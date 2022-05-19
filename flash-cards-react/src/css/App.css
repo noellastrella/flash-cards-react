@@ -34,15 +34,3 @@ footer{
 #addButton{
   cursor: pointer;
 }
-
-#save-load-container{
-  color:#FFF;
-  height: 100%;
-  margin-left: 2em;
-  display: flex;
-  align-items: center;
-}
-
-#save-load-container span{
-  margin: 0 1em ;
-}
