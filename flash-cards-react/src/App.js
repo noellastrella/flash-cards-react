@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Template, FlashCardData}  from './js/init';
+import {Template, getRandom}  from './js/init';
 import FlashCards from './components/flashcards';
 
 import './css/App.css';
@@ -9,13 +9,68 @@ import SaveLoadWidget from './components/save-load-widget';
 
 
 function App() {
+
+  // ------------------
   let json = "";
   let cardsArray = [];
 
+  // ------------------
+
   const [cards, modifyCards] = React.useState(cardsArray);
   const [fileName, setFileName] = React.useState('');
+  const [keyPressed, setKeyPressed] = useState(false);
+  const [currCard, setCurrCard] = React.useState(0);
+//let currCard = 0;
+  // ------------------ KEY PRESS HANDLER
+
+  const useKeyPress = (targetKey) => {
+    const [keyPressed, setKeyPressed] = useState(false);
+  
+    React.useEffect(() => {
+      const downHandler = ({ key }) => {
+        if (key === targetKey) {
+          setKeyPressed(true);
+        }
+      };
+  
+      const upHandler = ({ key }) => {
+        if (key === targetKey) {
+          setKeyPressed(false);
+        }
+      };
+  
+      window.addEventListener("keydown", downHandler);
+      window.addEventListener("keyup", upHandler);
+  
+      return () => {
+        window.removeEventListener("keydown", downHandler);
+        window.removeEventListener("keyup", upHandler);
+      };
+    }, [targetKey]);
+  
+    return keyPressed;
+  };
+
+  const arrowUpPressed = useKeyPress("ArrowLeft");
+  const arrowDownPressed = useKeyPress("ArrowRight");
+
+  React.useEffect(() => {
+    if (arrowUpPressed) {
+      changeIndex("prev")
+       //console.log("arrowLeft",cards)
+    }
+  }, [arrowUpPressed]);
+
+  React.useEffect(() => {
+    if (arrowDownPressed) {
+      changeIndex("next")
+     //console.log("arrowRight",cards)
+    }
+  }, [arrowDownPressed]);
+  // ------------------ INIT CARDS TO ADD
 
   let cardsToAdd = [
+  /*
     {
         id:-1,
         title: "Card 1",
@@ -26,51 +81,69 @@ function App() {
           text:"card 1 back"
         },
         correct: "n/a" //yes, no, n/a
-    },
-    {
-        id:-1,
-        title: "Card 2",
-        front:  {
-          text: "card 2 front"
-        },
-        back:   {
-          text:"card 2 back"
-        },
-        correct: "n/a" //yes, no, n/a
-    },        
-    {
-        id:-1,
-        title: "Card 3",
-        front:  {
-          text: "card 3 front"
-        },
-        back:   {
-          text:"card 3 back"
-        },
-        correct: "n/a" //yes, no, n/a
-    }
+    },      
+//*/
   ]
+  // ------------------
 
-  React.useEffect(()=>{ loadCards(cardsToAdd) },[])
   
+  React.useEffect(()=>{ 
+    loadCards(cardsToAdd) 
+    setCurrCard(1)
+  },[]) // load CAR
+  
+  // ------------------ CHANGE INDEX
+
+    const changeIndex=(e)=>{
+      
+      let temp = currCard;
+      console.log(temp )
+
+      switch (e){
+        case 'prev':
+          temp = temp>0?temp-=1:temp;
+          setCurrCard(temp);
+          break;
+
+        case 'next':
+          temp = temp<cards.length-1? temp+=1:temp;
+          setCurrCard(temp);
+          break;
+        default:
+          break;
+      }
+      
+      //console.log(temp,currCard,cards)
+    }
+  
+  // ------------------ LOAD CARDS
+
   const loadCards = (newCards)=>{
     newCards.forEach(e=>{
       modifyCards(cards=>[...cards,e])
     })  
   }
 
+  // ------------------ ADD CARD
+
   const addCard = ()=>{
     let cardType="flip";
     let index = -1;
+    
     Template.cardTypes.forEach((e,i)=>{
       //console.log(e.type. cardType)
       if(e.type==cardType) {
         index = i;
       }
     })
-    
+
     modifyCards(cards=>[...cards,Template.cardTypes[index]])
+    setCurrCard(index);
+    cardsArray = cards;
+    console.log(cardsArray);
   }
+  
+  // ------------------ EDIT CARD
 
   const editCard = (index, face, text)=>{
     let tempCards = JSON.parse(JSON.stringify(cards));
@@ -82,16 +155,29 @@ function App() {
     }
 
     modifyCards(cards=>[]); //erase all cards
-    loadCards(tempCards); //reload cards    
+    loadCards(tempCards); //reload cards 
+    
+    cardsArray = cards;
   }
+
+  // ------------------ DELETE CARD
 
   const deleteCard = (index)=>{
     let tempCards = JSON.parse(JSON.stringify(cards));
     
     tempCards.filter((e,i)=>{
+      console.log(i!=index)
+      if(i==index) console.log("ERASE ME::",i,index)
       return i!=index;
     })
+
+    console.log(tempCards)
+    modifyCards(cards=>[...tempCards]); //erase all cards
+    
+    cardsArray = cards;
   }
+
+  // ------------------ SAVE FILE
 
   const saveFile = ()=>{
 
@@ -111,6 +197,8 @@ function App() {
         a.click();
         window.URL.revokeObjectURL(url);
   }
+  
+  // ------------------ LOAD FILE
 
   const loadFile = (e)=>{
     
@@ -122,8 +210,6 @@ function App() {
     }
 
     function loadData(e2){
-        
-        
         let newCards= JSON.parse(e2.target.result)
         modifyCards(cards=>[...newCards])
       
@@ -133,18 +219,26 @@ function App() {
     reader.readAsText(e.target.files[0]);
   }
 
+  // ------------------ GET CARD DATA
+
   const getCardData = (index) =>{
     return cards[index];
   }
 
+
+  // ------------------ 
+
+
+
+  // ------------------ 
   return (
     <div className="App">
       <header className=""></header>
       <main>
       <i id="addButton" onClick={addCard}>+</i>
-        <FlashCards cards={cards} editCard={editCard} deleteCard={deleteCard} getCardData={getCardData} />        
+        <FlashCards cards={cards} editCard={editCard} deleteCard={deleteCard} getCardData={getCardData} currCard={currCard} />        
       </main>
-      <div><textarea value={JSON.stringify(cards)} readOnly /></div>
+      
       <footer>
         <SaveLoadWidget saveCB={saveFile} loadCB={loadFile} fileName = {fileName} setFileName={setFileName} />
       </footer>

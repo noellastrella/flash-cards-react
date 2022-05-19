@@ -13,13 +13,13 @@
 
 
 .trash-icon{
-    right: -1.5em;
-    bottom: 3em;
+    right: -6.5em;
+    bottom: 1em;
 }
 
 .flip-card-icon{
-    right: -1.5em;
-    top: 1em;
+    right: -6.5em;
+    top: 3em;
     transform-style: preserve-3d;
     opacity: 0;
 }
@@ -33,27 +33,35 @@ ul#flashCardContainer{
     padding:0;
     margin: 0;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+
+    width: 100%;
     
 }
 
 ul#flashCardContainer li{
     transform-style: preserve-3d;
     perspective: 1200px;
-}
-li .flashCard{
+    position: absolute;
     width: 36em;
     height: 18em;
+    transition: transform 0.8s;
+}
+
+li .flashCard{
+    position: absolute;
+    width: 100%;
+    height: 100%;
     margin: 2em;
     background-color: white;
     border: 1px solid #CCC; 
     perspective: 800px;
     transform-style: preserve-3d;
-    position: relative;
     transition: transform 0.8s;
     box-shadow: 0px 9px 7px 1px rgb(0 0 0 / 48%);
     background-color: #fff;
     background-image:
-    
     linear-gradient(#eee .1em, transparent .1em);
     background-size: 100% 1.2em;
 }

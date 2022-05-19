@@ -1,5 +1,3 @@
-
-
 export const Template = {
     score: 0,
     cardTypes : [
@@ -14,6 +12,8 @@ export const Template = {
             back    :   {
                 text : "NEW CARD BACK"
             },
+            style: "",
+            defaultStyle:"",
             answer: "",
             status: "incomplete", // incomplete, correct, incorrect
             points: 1,
@@ -47,3 +47,4 @@ export const Template = {
 export let FlashCardData = {
     cards: []
 }
+

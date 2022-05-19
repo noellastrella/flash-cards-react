@@ -3,12 +3,9 @@ import React, { useState } from "react";
 
 
 function SaveLoadWidget(props){
-    
-    
 
     let filename = "x";
     //mock data
-
 
     const saveData = (e)=>{
         props.saveCB()
