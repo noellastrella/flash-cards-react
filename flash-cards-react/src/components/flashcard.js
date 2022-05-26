@@ -8,7 +8,7 @@ function FlashCard(props){
     const [theStyle, setTheStyle] = useState({});
     
     //const styleFolded = {transform: `translateX(${getRandom(1000)-820}px) translateZ(${getRandom(325)}px) translateY(${getRandom(50)+400}px) rotate3d(${getRandom(100)+1800}, ${getRandom(1000)-500}, ${getRandom(-20)-200}, ${getRandom(10)+0}deg)`};
-    const styleFolded = {transform: `translateZ(${100*props.index}px) translateY(${400+(props.index*5)}px) rotate3d(${getRandom(100)+1800}, ${getRandom(1000)-500}, ${getRandom(-20)-200}, ${getRandom(10)+0}deg)`};
+    const styleFolded = {transform: `translateZ(${100*props.index}px) translateY(${400+(props.index*5)}px) rotate3d(${getRandom(100)+1800}, ${getRandom(1000)-500}, ${getRandom(-20)-200}, ${getRandom(20)+0}deg)`};
     
     React.useEffect(() => {
         console.log("index:",props.index, props.currCard)

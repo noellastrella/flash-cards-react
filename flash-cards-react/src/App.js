@@ -7,20 +7,16 @@ import './css/flashCard.css';
 
 import SaveLoadWidget from './components/save-load-widget';
 
-
 function App() {
 
   // ------------------
-  let json = "";
-  let cardsArray = [];
+  const [cards, modifyCards] = React.useState([]);
+  const [cardsUnfiltered, modifyUnfilteredCards] = React.useState([]);
 
-  // ------------------
-
-  const [cards, modifyCards] = React.useState(cardsArray);
   const [fileName, setFileName] = React.useState('');
   const [keyPressed, setKeyPressed] = useState(false);
   const [currCard, setCurrCard] = React.useState(0);
-//let currCard = 0;
+
   // ------------------ KEY PRESS HANDLER
 
   const useKeyPress = (targetKey) => {
@@ -66,13 +62,21 @@ function App() {
     }
   }, [arrowDownPressed]);
 
-
   // ------------------
 
   React.useEffect(()=>{ 
-    loadCards(cardsToAdd) 
+    let localStorageCards = localStorage.getItem('flashCards');
+    
+    if(localStorageCards){
+      modifyCards(JSON.parse(localStorageCards));
+      
+    }else{
+      loadCards(cardsToAdd);
+    }
+    
+
     setCurrCard(1)
-  },[]) // load CAR
+  },[]) // load CARDS
   
   // ------------------ CHANGE INDEX
 
@@ -94,16 +98,17 @@ function App() {
         default:
           break;
       }
-      
-      //console.log(temp,currCard,cards)
     }
 
   // ------------------ RESET CARDS
 
     const resetCards = ()=>{
-      modifyCards(cards=>[]);
+      if(window.confirm("Are you sure you want to reset cards?")){
+        localStorage.clear();
+        modifyCards(cards=>[]);
+      }
+      
     }  
-
 
   // ------------------ LOAD CARDS
 
@@ -128,8 +133,6 @@ function App() {
 
     modifyCards(cards=>[...cards,Template.cardTypes[index]])
     setCurrCard(index);
-    cardsArray = cards;
-    console.log(cardsArray);
   }
   
   // ------------------ EDIT CARD
@@ -145,8 +148,6 @@ function App() {
 
     modifyCards(cards=>[]); //erase all cards
     loadCards(tempCards); //reload cards 
-    
-    cardsArray = cards;
   }
 
   // ------------------ DELETE CARD
@@ -163,12 +164,12 @@ function App() {
     console.log(tempCards)
     modifyCards(cards=>[...tempCards]); //erase all cards
     
-    cardsArray = cards;
   }
 
   // ------------------ SAVE FILE
 
   const saveFile = ()=>{
+    saveLocal();
 
     let a = document.createElement("a");
         document.body.appendChild(a);
@@ -187,13 +188,14 @@ function App() {
         window.URL.revokeObjectURL(url);
   }
   
-
     // ------------------ SAVE LOCAL
 
     const saveLocal = ()=>{
-
+      
+      localStorage.setItem('flashCards', JSON.stringify(cards));
+      console.log("SAVE", typeof cards)
+      alert("flashcards saved");
     }
-  
     
   // ------------------ LOAD FILE
 

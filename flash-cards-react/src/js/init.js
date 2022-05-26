@@ -6,11 +6,11 @@ export const Template = {
             type: "flip",
             title: "",
             front   :   {
-                text:   "NEW CARD FRONT",
+                text:   "(CLICK TO EDIT ME)",
                 media:  "" //URL : image or video
             },
             back    :   {
-                text : "NEW CARD BACK"
+                text : "(CLICK TO EDIT ME TOO)"
             },
             style: "",
             defaultStyle:"",

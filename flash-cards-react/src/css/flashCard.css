@@ -93,3 +93,8 @@ li .flashCard .cardBack{
     background-color: #CCC;
     transform: rotateY(180deg);
 }
+
+
+#cardFront div, #cardBack div{
+    max-width: 90%;
+}
