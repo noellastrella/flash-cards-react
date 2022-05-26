@@ -34,3 +34,19 @@ footer{
 #addButton{
   cursor: pointer;
 }
+
+#save-load-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* align-content: center; */
+  height: 100%;
+  /* color: #FFF; */
+}
+
+#save-load-container label{
+  color: #FFF;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+

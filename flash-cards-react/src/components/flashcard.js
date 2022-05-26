@@ -5,7 +5,6 @@ function FlashCard(props){
     let flipped = "";
 
     const [cardStyle, setCardStyle] = useState("cont");
-
     const [theStyle, setTheStyle] = useState({});
     
     //const styleFolded = {transform: `translateX(${getRandom(1000)-820}px) translateZ(${getRandom(325)}px) translateY(${getRandom(50)+400}px) rotate3d(${getRandom(100)+1800}, ${getRandom(1000)-500}, ${getRandom(-20)-200}, ${getRandom(10)+0}deg)`};

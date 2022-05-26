@@ -7,17 +7,6 @@ function SaveLoadWidget(props){
     let filename = "x";
     //mock data
 
-    const saveData = (e)=>{
-        
-        console.log(e, "save");
-        props.saveCB()
-    };
-
-    const loadData = (e)=>{
-        console.log(e, "load");
-        props.loadCB(e)
-    };
-
 
     const handleChange=(e)=>{
         
@@ -29,10 +18,18 @@ function SaveLoadWidget(props){
     return(
         <section >
             <div id="save-load-container">
-                <div>SAVE LOAD WIDGET</div>
-                <button id="save-button" onClick={saveData}>SAVE</button>
-                <input type="text" placeholder="filename.cards" value={props.fileName} onChange={e=>handleChange(e.target.value)}/>
-                <input type="file" id="load-button" onChange={loadData} value="" />
+                
+                
+                {/* <input type="text" placeholder="filename.cards" value={props.fileName} onChange={e=>handleChange(e.target.value)}/> */}
+                <label for="file">Save</label>
+                <button id="save-button" onClick={props.saveLocalCB}>SAVE</button>
+                <button id="save-button" onClick={props.saveCB}>DOWNLOAD SAVE FILE</button>
+
+                <label for="file">Load File: </label>
+                <input type="file" id="load-button" onChange={props.loadCB} value="" />
+                
+                <button id="save-button" onClick={props.resetCardsCB}>RESET CARDS</button>
+
             </div>
 
         </section>

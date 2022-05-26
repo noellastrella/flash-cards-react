@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Template, getRandom}  from './js/init';
+import {Template, cardsToAdd}  from './js/init';
 import FlashCards from './components/flashcards';
 
 import './css/App.css';
@@ -57,36 +57,18 @@ function App() {
   React.useEffect(() => {
     if (arrowUpPressed) {
       changeIndex("prev")
-       //console.log("arrowLeft",cards)
     }
   }, [arrowUpPressed]);
 
   React.useEffect(() => {
     if (arrowDownPressed) {
       changeIndex("next")
-     //console.log("arrowRight",cards)
     }
   }, [arrowDownPressed]);
-  // ------------------ INIT CARDS TO ADD
 
-  let cardsToAdd = [
-  /*
-    {
-        id:-1,
-        title: "Card 1",
-        front:  {
-          text: "card 1 front"
-        },
-        back:   {
-          text:"card 1 back"
-        },
-        correct: "n/a" //yes, no, n/a
-    },      
-//*/
-  ]
+
   // ------------------
 
-  
   React.useEffect(()=>{ 
     loadCards(cardsToAdd) 
     setCurrCard(1)
@@ -115,7 +97,14 @@ function App() {
       
       //console.log(temp,currCard,cards)
     }
-  
+
+  // ------------------ RESET CARDS
+
+    const resetCards = ()=>{
+      modifyCards(cards=>[]);
+    }  
+
+
   // ------------------ LOAD CARDS
 
   const loadCards = (newCards)=>{
@@ -167,7 +156,7 @@ function App() {
     
     tempCards.filter((e,i)=>{
       console.log(i!=index)
-      if(i==index) console.log("ERASE ME::",i,index)
+      if(i==index) console.log("ERASE ME::",i,index);
       return i!=index;
     })
 
@@ -198,6 +187,14 @@ function App() {
         window.URL.revokeObjectURL(url);
   }
   
+
+    // ------------------ SAVE LOCAL
+
+    const saveLocal = ()=>{
+
+    }
+  
+    
   // ------------------ LOAD FILE
 
   const loadFile = (e)=>{
@@ -225,11 +222,6 @@ function App() {
     return cards[index];
   }
 
-
-  // ------------------ 
-
-
-
   // ------------------ 
   return (
     <div className="App">
@@ -240,7 +232,7 @@ function App() {
       </main>
       
       <footer>
-        <SaveLoadWidget saveCB={saveFile} loadCB={loadFile} fileName = {fileName} setFileName={setFileName} />
+        <SaveLoadWidget resetCardsCB={resetCards} saveLocalCB={saveLocal} saveCB={saveFile} loadCB={loadFile} fileName = {fileName} setFileName={setFileName} />
       </footer>
     </div>
   );

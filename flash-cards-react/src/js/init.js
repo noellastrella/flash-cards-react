@@ -48,3 +48,21 @@ export let FlashCardData = {
     cards: []
 }
 
+
+  // ------------------ INIT CARDS TO ADD
+
+export const cardsToAdd = [
+    /*
+      {
+          id:-1,
+          title: "Card 1",
+          front:  {
+            text: "card 1 front"
+          },
+          back:   {
+            text:"card 1 back"
+          },
+          correct: "n/a" //yes, no, n/a
+      },      
+  //*/
+    ]
