@@ -13,7 +13,7 @@ function FlashCard(props){
     React.useEffect(() => {
         console.log("index:",props.index, props.currCard)
         
-        if(props.index===props.currCard){
+        if(props.index === props.currCard){
             setTheStyle({transform:`none`});
         }else{
             setTheStyle(styleFolded);
@@ -56,10 +56,10 @@ function FlashCard(props){
         <li style={theStyle}>
             <section className={`flashCard ${cardStyle}`} >
                 <div className="cardFront">
-                    <ContentEditable html={cardFront}  onChange={handleChangeFront} />
+                    <ContentEditable html={cardFront} onChange={handleChangeFront} />
                 </div>
                 <div className="cardBack">
-                    <ContentEditable html={cardBack}  onChange={handleChangeBack} />
+                    <ContentEditable html={cardBack} onChange={handleChangeBack} />
                 </div>
             </section>
             <img src="/images/flip.svg" className="icons flip-card-icon" onClick={flipCard}/>
@@ -69,9 +69,4 @@ function FlashCard(props){
     );
 }
 
-
-
-
 export default FlashCard;
-
-

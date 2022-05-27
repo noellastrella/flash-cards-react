@@ -3,11 +3,7 @@ import React from 'react';
 
 
 function SaveLoadWidget(props){
-    
-
     //mock data
-
-
     const saveData = (e)=>{
         console.log(e, "save");
     };
@@ -16,8 +12,6 @@ function SaveLoadWidget(props){
         console.log(e, "load");
 
     };
-
-
     
     return(
         <section >
@@ -27,7 +21,6 @@ function SaveLoadWidget(props){
                     
                 </select>
             </div>
-
         </section>
     );
 }

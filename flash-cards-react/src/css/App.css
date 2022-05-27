@@ -29,11 +29,15 @@ footer{
   height: 2em;
   font-weight: bold;
   font-style: normal;
-}
-
-#addButton{
   cursor: pointer;
 }
+
+#addButton:hover{
+  background-color: #CCC;
+  color: #333;
+}
+
+
 
 #save-load-container{
   display: flex;

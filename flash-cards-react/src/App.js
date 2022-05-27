@@ -74,8 +74,6 @@ function App() {
       loadCards(cardsToAdd);
     }
     
-
-    
   },[]) // load CARDS
   
   // ------------------ CHANGE INDEX
@@ -106,7 +104,6 @@ function App() {
         localStorage.clear();
         modifyCards(cards=>[]);
       }
-      
     }  
 
   // ------------------ LOAD CARDS
@@ -125,13 +122,13 @@ function App() {
     
     Template.cardTypes.forEach((e,i)=>{
       //console.log(e.type. cardType)
-      if(e.type==cardType) {
+      if(e.type===cardType) {
         index = i;
       }
     })
 
     modifyCards(cards=>[...cards,Template.cardTypes[index]])
-    setCurrCard(index);
+    setCurrCard(cards.length-1);
   }
   
   // ------------------ EDIT CARD
@@ -139,7 +136,7 @@ function App() {
   const editCard = (index, face, text)=>{
     let tempCards = JSON.parse(JSON.stringify(cards));
 
-    if(face=="Front"){
+    if(face==="Front"){
       tempCards[index].front.text = text;
     }else{
       tempCards[index].back.text = text;
@@ -155,14 +152,13 @@ function App() {
     let tempCards = JSON.parse(JSON.stringify(cards));
     
     tempCards.filter((e,i)=>{
-      console.log(i!=index)
-      if(i==index) console.log("ERASE ME::",i,index);
-      return i!=index;
+      console.log(i!==index)
+      if(i===index) console.log("ERASE ME::",i,index);
+      return i!==index;
     })
 
     console.log(tempCards)
     modifyCards(cards=>[...tempCards]); //erase all cards
-    
   }
 
   // ------------------ SAVE FILE
@@ -190,7 +186,6 @@ function App() {
     // ------------------ SAVE LOCAL
 
     const saveLocal = ()=>{
-      
       localStorage.setItem('flashCards', JSON.stringify(cards));
       console.log("SAVE", typeof cards)
       alert("flashcards saved");
