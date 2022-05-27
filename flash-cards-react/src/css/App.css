@@ -25,7 +25,7 @@ footer{
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2em;
+  padding: .25em .5em;
   height: 2em;
   font-weight: bold;
   font-style: normal;

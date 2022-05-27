@@ -75,13 +75,12 @@ function App() {
     }
     
 
-    setCurrCard(1)
+    
   },[]) // load CARDS
   
   // ------------------ CHANGE INDEX
 
     const changeIndex=(e)=>{
-      
       let temp = currCard;
       console.log(temp )
 
@@ -229,7 +228,7 @@ function App() {
     <div className="App">
       <header className=""></header>
       <main>
-      <i id="addButton" onClick={addCard}>+</i>
+      <i id="addButton" onClick={addCard}>+ Add Card</i>
         <FlashCards cards={cards} editCard={editCard} deleteCard={deleteCard} getCardData={getCardData} currCard={currCard} />        
       </main>
       
