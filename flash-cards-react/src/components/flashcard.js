@@ -6,23 +6,23 @@ function FlashCard(props){
 
     const [cardStyle, setCardStyle] = useState("cont");
     const [theStyle, setTheStyle] = useState({});
-    
+    let currCard = props.currCard;
+
     //const styleFolded = {transform: `translateX(${getRandom(1000)-820}px) translateZ(${getRandom(325)}px) translateY(${getRandom(50)+400}px) rotate3d(${getRandom(100)+1800}, ${getRandom(1000)-500}, ${getRandom(-20)-200}, ${getRandom(10)+0}deg)`};
     const styleFolded = {transform: `translateZ(${100*props.index}px) translateY(${400+(props.index*5)}px) rotate3d(${getRandom(100)+1800}, ${getRandom(1000)-500}, ${getRandom(-20)-200}, ${getRandom(20)+0}deg)`};
     
     React.useEffect(() => {
-        console.log("index:",props.index, props.currCard)
+        console.log("index:",props.index, currCard)
         
-        if(props.index === props.currCard){
+        if(props.index === currCard){
             setTheStyle({transform:`none`});
         }else{
             setTheStyle(styleFolded);
         }
-    }, [props.currCard]);
 
-    React.useEffect(() => {
-        setTheStyle(styleFolded);
-    }, []);
+    }, [currCard]);
+
+
 
     const flipCard = (e) => {
         flipped = flipped == "" ? "flipped":"";
@@ -33,11 +33,11 @@ function FlashCard(props){
         props.deleteCard(props.index)
     }
 
-    const handleChangeBack = (e) => {
+    const handleChangeBackFace = (e) => {
         props.editCard(props.index, "Back", e.target.value)
     }
 
-    const handleChangeFront = (e) => {
+    const handleChangeFrontFace = (e) => {
         props.editCard(props.index, "Front", e.target.value)
     }
 
@@ -53,13 +53,16 @@ function FlashCard(props){
 
 
     return(
-        <li style={theStyle}>
+        <li style={theStyle} alt={`curr:${currCard} i:${props.index}`}>
             <section className={`flashCard ${cardStyle}`} >
                 <div className="cardFront">
-                    <ContentEditable html={cardFront} onChange={handleChangeFront} />
+                    <ContentEditable html={cardFront} onChange={handleChangeFrontFace} />
                 </div>
                 <div className="cardBack">
-                    <ContentEditable html={cardBack} onChange={handleChangeBack} />
+                    <ContentEditable html={cardBack} onChange={handleChangeBackFace} />
+                </div>
+                <div>
+                    <sup>{props.index}</sup>
                 </div>
             </section>
             <img src="/images/flip.svg" className="icons flip-card-icon" onClick={flipCard}/>

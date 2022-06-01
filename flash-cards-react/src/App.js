@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import {Template, cardsToAdd}  from './js/init';
 import FlashCards from './components/flashcards';
+import SaveLoadWidget from './components/save-load-widget';
 
 import './css/App.css';
 import './css/flashCard.css';
 
-import SaveLoadWidget from './components/save-load-widget';
-
 function App() {
-
-  // ------------------
+  
   const [cards, modifyCards] = React.useState([]);
   const [cardsUnfiltered, modifyUnfilteredCards] = React.useState([]);
 
@@ -80,7 +78,6 @@ function App() {
 
     const changeIndex=(e)=>{
       let temp = currCard;
-      console.log(temp )
 
       switch (e){
         case 'prev':
@@ -128,7 +125,7 @@ function App() {
     })
 
     modifyCards(cards=>[...cards,Template.cardTypes[index]])
-    setCurrCard(cards.length-1);
+    setCurrCard(cards.length);
   }
   
   // ------------------ EDIT CARD
@@ -194,7 +191,6 @@ function App() {
   // ------------------ LOAD FILE
 
   const loadFile = (e)=>{
-    
     let reader;
     reader = new FileReader();
 
@@ -223,12 +219,14 @@ function App() {
     <div className="App">
       <header className=""></header>
       <main>
+        <sup>Current Card {currCard}</sup>
       <i id="addButton" onClick={addCard}>+ Add Card</i>
         <FlashCards cards={cards} editCard={editCard} deleteCard={deleteCard} getCardData={getCardData} currCard={currCard} />        
       </main>
       
       <footer>
         <SaveLoadWidget resetCardsCB={resetCards} saveLocalCB={saveLocal} saveCB={saveFile} loadCB={loadFile} fileName = {fileName} setFileName={setFileName} />
+
       </footer>
     </div>
   );

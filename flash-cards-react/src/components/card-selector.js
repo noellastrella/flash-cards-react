@@ -2,17 +2,8 @@ import React from 'react';
 
 
 
-function SaveLoadWidget(props){
-    //mock data
-    const saveData = (e)=>{
-        console.log(e, "save");
-    };
+function CardSelector(props){
 
-    const loadData = (e)=>{
-        console.log(e, "load");
-
-    };
-    
     return(
         <section >
             <div id="select-card-container">
