@@ -9,7 +9,7 @@ function FlashCard(props){
     let currCard = props.currCard;
 
     //const styleFolded = {transform: `translateX(${getRandom(1000)-820}px) translateZ(${getRandom(325)}px) translateY(${getRandom(50)+400}px) rotate3d(${getRandom(100)+1800}, ${getRandom(1000)-500}, ${getRandom(-20)-200}, ${getRandom(10)+0}deg)`};
-    const styleFolded = {transform: `translateZ(${100*props.index}px) translateY(${400+(props.index*5)}px) rotate3d(${getRandom(100)+1800}, ${getRandom(1000)-500}, ${getRandom(-20)-200}, ${getRandom(20)+0}deg)`};
+    const styleFolded = {transform: `translateX(${-10+getRandom(-10)+10}px)  translateZ(${100*props.index}px) translateY(${400+(props.index*5)}px) rotate3d(${getRandom(100)+1800}, ${getRandom(1000)-500}, ${getRandom(-20)-200}, ${getRandom(20)+0}deg)`};
     
     React.useEffect(() => {
         console.log("index:",props.index, currCard)
@@ -45,10 +45,6 @@ function FlashCard(props){
     function getRandom (num){
         return (Math.random()*num)+1;
     }
-// `transform: translateX(${getRandom(125)}px) translateZ(${getRandom(125)}px) translateY(${getRandom(500)}px) rotate3d(${getRandom(900)}, ${getRandom(200)}, ${getRandom(-200)}, ${getRandom(90)}deg);`
-    //`transform: translateX(125px) translateZ(-125px) translateY(510px) rotate3d(900, 114, -124, 89deg);`
-
-
 
     return(
         <li style={theStyle} alt={`curr:${currCard} i:${props.index}`}>

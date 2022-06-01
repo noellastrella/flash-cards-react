@@ -146,9 +146,7 @@ function App() {
   // ------------------ DELETE CARD
 
   const deleteCard = (index)=>{
-    let tempCards = JSON.parse(JSON.stringify(cards));
-    
-    tempCards.filter((e,i)=>{
+    let tempCards = cards.filter((e,i)=>{
       console.log(i!==index)
       if(i===index) console.log("ERASE ME::",i,index);
       return i!==index;
@@ -156,6 +154,7 @@ function App() {
 
     console.log(tempCards)
     modifyCards(cards=>[...tempCards]); //erase all cards
+    setCurrCard(currCard-1)
   }
 
   // ------------------ SAVE FILE
