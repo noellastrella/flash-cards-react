@@ -22,8 +22,6 @@ function FlashCard(props){
 
     }, [currCard]);
 
-
-
     const flipCard = (e) => {
         flipped = flipped == "" ? "flipped":"";
         setCardStyle(flipped);
