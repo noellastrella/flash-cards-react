@@ -14,7 +14,7 @@ function FlashCard(props){
     const [nudgeRightClass, setNudgeRightClass] = useState("");
     
     React.useEffect(() =>{
-        setStyleFolded({transform: `translateX(${-10+getRandom(-10)+10}px)  translateZ(${100*props.index}px) translateY(${500+(props.index*5)}px) rotate3d(${getRandom(100)+1800}, ${getRandom(1000)-500}, ${getRandom(-20)-200}, ${getRandom(20)+0}deg)`})
+        setStyleFolded({transform: `translateX(${-10+getRandom(-10)+10}px)  translateZ(${100*props.index}px) translateY(${700+(props.index*5)}px) rotate3d(${getRandom(100)+1800}, ${getRandom(1000)-500}, ${getRandom(-20)-200}, ${getRandom(20)+0}deg)`})
     },[])
 
     React.useEffect(() => {
