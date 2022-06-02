@@ -73,7 +73,7 @@ function App() {
     }
     
   },[]) // load CARDS
-  
+
   // ------------------ CHANGE INDEX
 
     const changeIndex=(e)=>{
@@ -118,7 +118,6 @@ function App() {
     let index = -1;
     
     Template.cardTypes.forEach((e,i)=>{
-      //console.log(e.type. cardType)
       if(e.type===cardType) {
         index = i;
       }
@@ -126,6 +125,7 @@ function App() {
 
     modifyCards(cards=>[...cards,Template.cardTypes[index]])
     setCurrCard(cards.length);
+    saveLocal();
   }
   
   // ------------------ EDIT CARD
@@ -141,6 +141,7 @@ function App() {
 
     modifyCards(cards=>[]); //erase all cards
     loadCards(tempCards); //reload cards 
+    saveLocal();
   }
 
   // ------------------ DELETE CARD
@@ -152,7 +153,6 @@ function App() {
       return i!==index;
     })
 
-    console.log(tempCards)
     modifyCards(cards=>[...tempCards]); //erase all cards
     setCurrCard(currCard-1)
   }
@@ -169,8 +169,8 @@ function App() {
         let theFileName = fileName? fileName: "flashcards.cards"
         let txt = JSON.stringify(cards);
         
-        var file = new Blob([txt], {type: "text/plain;charset=utf-8"});
-        var url = window.URL.createObjectURL(file);
+        let file = new Blob([txt], {type: "text/plain;charset=utf-8"});
+        let url = window.URL.createObjectURL(file);
         
         a.href = url;
         
@@ -184,7 +184,6 @@ function App() {
     const saveLocal = ()=>{
       localStorage.setItem('flashCards', JSON.stringify(cards));
       console.log("SAVE", typeof cards)
-      alert("flashcards saved");
     }
     
   // ------------------ LOAD FILE
@@ -219,10 +218,11 @@ function App() {
       <header className=""></header>
       <main>
         <sup>Current Card {currCard}</sup>
-      <i id="addButton" onClick={addCard}>+ Add Card</i>
+      <i id="add-button" className="nav-buttons" onClick={addCard}>+ Add Card</i>
         <FlashCards cards={cards} editCard={editCard} deleteCard={deleteCard} getCardData={getCardData} currCard={currCard} />        
       </main>
-      
+      <div id="prev-button" className="nav-buttons" onClick={()=>changeIndex("prev")}>&lt;&nbsp;Previous</div>
+      <div id="next-button" className="nav-buttons"  onClick={()=>changeIndex("next")}>Next&nbsp;&gt;</div>
       <footer>
         <SaveLoadWidget resetCardsCB={resetCards} saveLocalCB={saveLocal} saveCB={saveFile} loadCB={loadFile} fileName = {fileName} setFileName={setFileName} />
 

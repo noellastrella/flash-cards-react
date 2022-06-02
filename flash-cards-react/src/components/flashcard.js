@@ -3,19 +3,25 @@ import ContentEditable from 'react-contenteditable'
 
 function FlashCard(props){
     let flipped = "";
-
-    const [cardStyle, setCardStyle] = useState("cont");
-    const [theStyle, setTheStyle] = useState({});
     let currCard = props.currCard;
 
-    //const styleFolded = {transform: `translateX(${getRandom(1000)-820}px) translateZ(${getRandom(325)}px) translateY(${getRandom(50)+400}px) rotate3d(${getRandom(100)+1800}, ${getRandom(1000)-500}, ${getRandom(-20)-200}, ${getRandom(10)+0}deg)`};
-    const styleFolded = {transform: `translateX(${-10+getRandom(-10)+10}px)  translateZ(${100*props.index}px) translateY(${400+(props.index*5)}px) rotate3d(${getRandom(100)+1800}, ${getRandom(1000)-500}, ${getRandom(-20)-200}, ${getRandom(20)+0}deg)`};
+    const defaultCardPosition = {transform: `translateY(${80}px)`}
+    const [cardStyle, setCardStyle] = useState("cont");
+    const [theStyle, setTheStyle] = useState(defaultCardPosition);
+
+    //const styleFolded = {transform: `translateX(${getRandom(10)-20}px) translateZ(${getRandom(325)}px) translateY(${getRandom(50)+400}px) rotate3d(${getRandom(100)+1800}, ${getRandom(1000)-500}, ${getRandom(-20)-200}, ${getRandom(10)+0}deg)`};
+    const [styleFolded, setStyleFolded] = useState(defaultCardPosition);
+    const [nudgeRightClass, setNudgeRightClass] = useState("");
     
+    React.useEffect(() =>{
+        setStyleFolded({transform: `translateX(${-10+getRandom(-10)+10}px)  translateZ(${100*props.index}px) translateY(${500+(props.index*5)}px) rotate3d(${getRandom(100)+1800}, ${getRandom(1000)-500}, ${getRandom(-20)-200}, ${getRandom(20)+0}deg)`})
+    },[])
+
     React.useEffect(() => {
         console.log("index:",props.index, currCard)
         
         if(props.index === currCard){
-            setTheStyle({transform:`none`});
+            setTheStyle(defaultCardPosition);
         }else{
             setTheStyle(styleFolded);
         }
@@ -23,7 +29,7 @@ function FlashCard(props){
     }, [currCard]);
 
     const flipCard = (e) => {
-        flipped = flipped == "" ? "flipped":"";
+        flipped = flipped === "flipped" ? "":"flipped";
         setCardStyle(flipped);
     }
 
@@ -39,6 +45,24 @@ function FlashCard(props){
         props.editCard(props.index, "Front", e.target.value)
     }
 
+    const handleFavorite = (e) =>{
+
+    }
+
+    const handleCorrect = (e) =>{
+        
+    }
+
+    const handleIncorrect = (e) =>{
+        
+    }
+
+    const nudgeRight = (e) => {
+        if(currCard !== props.index){
+            nudgeRightClass ===""? setNudgeRightClass("nudgeRight") : setNudgeRightClass("")
+        }
+    }
+
     let cardFront = props.getCardData(props.index).front.text;
     let cardBack = props.getCardData(props.index).back.text;
 
@@ -47,13 +71,15 @@ function FlashCard(props){
     }
 
     return(
-        <li style={theStyle} alt={`curr:${currCard} i:${props.index}`}>
+        <li style={theStyle} className={`${nudgeRightClass} `} alt={`curr:${currCard} i:${props.index}`} onClick={nudgeRight}>
             <section className={`flashCard ${cardStyle}`} >
                 <div className="cardFront">
                     <ContentEditable html={cardFront} onChange={handleChangeFrontFace} />
                 </div>
                 <div className="cardBack">
                     <ContentEditable html={cardBack} onChange={handleChangeBackFace} />
+                    <img src="/images/right.svg" className="icons correct-icon" onClick={handleCorrect}/>
+                    <img src="/images/wrong.svg" className="icons incorrect-icon" onClick={handleIncorrect}/>
                 </div>
                 <div>
                     <sup>{props.index}</sup>
@@ -61,8 +87,8 @@ function FlashCard(props){
             </section>
             <img src="/images/flip.svg" className="icons flip-card-icon" onClick={flipCard}/>
             <img src="/images/trash.svg" className="icons trash-icon" onClick={deleteCard}/>
+            <img src="/images/heart.svg" className="icons favorite-icon" onClick={handleFavorite}/>
         </li>
-
     );
 }
 

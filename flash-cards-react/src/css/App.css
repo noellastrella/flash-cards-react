@@ -18,25 +18,8 @@ footer{
 }
 
 #addButton{
-  font-size: 2em;
-  color: #FFF;
-  background-color: #000;
-  border: #CCC 1px solid;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: .25em .5em;
-  height: 2em;
-  font-weight: bold;
-  font-style: normal;
-  cursor: pointer;
-}
 
-#addButton:hover{
-  background-color: #CCC;
-  color: #333;
 }
-
 
 
 #save-load-container{
@@ -54,3 +37,41 @@ footer{
   margin-right: 1em;
 }
 
+.nav-buttons{
+  font-size: 2em;
+  color: #FFF;
+  background-color: #000;
+  border: #CCC 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: .25em .5em;
+  height: 2em;
+  font-weight: bold;
+  font-style: normal;
+  cursor: pointer;
+}
+
+.nav-buttons:hover{
+  background-color: #CCC;
+  color: #333;
+}
+
+
+#add-button{
+  position: absolute;
+  left: 45%;
+  top: 5%;
+}
+
+#prev-button{
+  position: absolute;
+  left: 5%;
+  top: 50%;
+}
+
+#next-button{
+  position: absolute;
+  right: 5%;
+  top: 50%;
+}

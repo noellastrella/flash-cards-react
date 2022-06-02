@@ -4,13 +4,12 @@
 }
 
 .icons{
-    width: 3em;
-    height: 3em;
+    width: 3rem;
+    height: 3rem;
     position: absolute;
     transition: all .2s;
     opacity: 0;
 }
-
 
 .trash-icon{
     right: -6.5em;
@@ -23,6 +22,28 @@
     transform-style: preserve-3d;
     opacity: 0;
 }
+
+.favorite-icon{
+    left: -1.5em;
+    bottom: 5%;
+    transform-style: preserve-3d;
+    opacity: 0;
+}
+
+.correct-icon{
+    left: 40%;
+    bottom: 5%;
+    transform-style: preserve-3d;
+    opacity: 0;
+}
+
+.incorrect-icon{
+    left: 50%;
+    bottom: 5%;
+    transform-style: preserve-3d;
+    opacity: 0;
+}
+
 
 ul#flashCardContainer li:hover .icons{
     opacity: 1;
@@ -46,7 +67,7 @@ ul#flashCardContainer li{
     position: absolute;
     width: 36em;
     height: 18em;
-    transition: transform 0.8s;
+    transition: all 0.8s;
 }
 
 li .flashCard{
@@ -97,4 +118,8 @@ li .flashCard .cardBack{
 
 #cardFront div, #cardBack div{
     max-width: 90%;
+}
+
+.nudgeRight{
+    margin-right: -40em;
 }
