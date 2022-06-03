@@ -17,6 +17,8 @@ footer{
   height: 5em;
   justify-content: space-evenly;
   padding: 2em;
+  z-index: 999999999999999;
+  transform: translateZ(9900px);
 }
 
 #addButton{
