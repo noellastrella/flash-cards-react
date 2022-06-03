@@ -17,7 +17,8 @@ export const Template = {
             answer: "",
             status: "incomplete", // incomplete, correct, incorrect
             points: 1,
-            correct: "n/a"
+            correct: "n/a",
+            favorite: false
         },
         {
             type: "multiple choice",
@@ -38,6 +39,7 @@ export const Template = {
                 answer: "",
                 status: "incomplete", // incomplete, correct, incorrect
                 points: 1,
+                favorite: false
             }
                 
         },
@@ -48,8 +50,7 @@ export let FlashCardData = {
     cards: []
 }
 
-
-  // ------------------ INIT CARDS TO ADD
+// ------------------ INIT CARDS TO ADD
 
 export const cardsToAdd = [
     /*

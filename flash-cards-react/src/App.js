@@ -2,19 +2,54 @@ import React, { useState } from "react";
 import {Template, cardsToAdd}  from './js/init';
 import FlashCards from './components/flashcards';
 import SaveLoadWidget from './components/save-load-widget';
+import CardSelector from './components/card-selector';
 
 import './css/App.css';
 import './css/flashCard.css';
 
 function App() {
-  
   const [cards, modifyCards] = React.useState([]);
-  const [cardsUnfiltered, modifyUnfilteredCards] = React.useState([]);
+  const [cardsFiltered, modifyCardsFiltered] = React.useState([]);
 
+  
   const [fileName, setFileName] = React.useState('');
-  const [keyPressed, setKeyPressed] = useState(false);
+//  const [keyPressed, setKeyPressed] = useState(false);
   const [currCard, setCurrCard] = React.useState(0);
+  const [filters, setFilters] = React.useState({})
+  
+  // ------------------ START
 
+  React.useEffect(()=>{ 
+    let localStorageCards = localStorage.getItem('flashCards');
+    
+    if(localStorageCards){
+      modifyCards(JSON.parse(localStorageCards));
+    }else{
+      loadCards(cardsToAdd);
+    }
+
+    setFilters({
+      unlabeled : true,
+      incorrect : true,
+      correct   : true,
+      favorite  : true 
+    })
+  },[]) // load CARDS
+
+  React.useEffect (()=>{
+    modifyCardsFiltered(
+      cards.filter(e=>{
+        let pass = false;
+          if(e.favorite==true && filters.favorite==true) pass = true;
+
+
+        return pass;
+      })
+    )
+
+
+  },[filters])
+  
   // ------------------ KEY PRESS HANDLER
 
   const useKeyPress = (targetKey) => {
@@ -60,20 +95,6 @@ function App() {
     }
   }, [arrowDownPressed]);
 
-  // ------------------
-
-  React.useEffect(()=>{ 
-    let localStorageCards = localStorage.getItem('flashCards');
-    
-    if(localStorageCards){
-      modifyCards(JSON.parse(localStorageCards));
-      
-    }else{
-      loadCards(cardsToAdd);
-    }
-    
-  },[]) // load CARDS
-
   // ------------------ CHANGE INDEX
 
     const changeIndex=(e)=>{
@@ -84,7 +105,6 @@ function App() {
           temp = temp>0?temp-=1:temp;
           setCurrCard(temp);
           break;
-
         case 'next':
           temp = temp<cards.length-1? temp+=1:temp;
           setCurrCard(temp);
@@ -130,13 +150,21 @@ function App() {
   
   // ------------------ EDIT CARD
 
-  const editCard = (index, face, text)=>{
+  const editCard = (index, mode, data="")=>{
     let tempCards = JSON.parse(JSON.stringify(cards));
 
-    if(face==="Front"){
-      tempCards[index].front.text = text;
+    if(mode==="front"){
+      tempCards[index].front.text = data;
+    }else if(mode==="back"){
+      tempCards[index].back.text = data;
+    }else if(mode==="favorite"){
+      tempCards[index].favorite = !tempCards[index].favorite;
+    }else if(mode==="incorrect"){
+      tempCards[index].correct = tempCards[index].correct === "no" ? "n/a" : "no";
+    }else if(mode==="correct"){
+      tempCards[index].correct = tempCards[index].correct === "yes" ? "n/a" : "yes";
     }else{
-      tempCards[index].back.text = text;
+      alert("Error editing cards")
     }
 
     modifyCards(cards=>[]); //erase all cards
@@ -168,7 +196,6 @@ function App() {
         let save_btn = document.querySelector("#save");
         let theFileName = fileName? fileName: "flashcards.cards"
         let txt = JSON.stringify(cards);
-        
         let file = new Blob([txt], {type: "text/plain;charset=utf-8"});
         let url = window.URL.createObjectURL(file);
         
@@ -198,12 +225,17 @@ function App() {
 
     function loadData(e2){
         let newCards= JSON.parse(e2.target.result)
-        modifyCards(cards=>[...newCards])
-      
+        modifyCards(cards=>[...newCards]);
         setFileName(e.target.files[0].name);
     }
     
     reader.readAsText(e.target.files[0]);
+  }
+
+  // ------------------ toggleFilters
+
+  const toggleFilters = (e) =>{
+
   }
 
   // ------------------ GET CARD DATA
@@ -217,15 +249,15 @@ function App() {
     <div className="App">
       <header className=""></header>
       <main>
-        <sup>Current Card {currCard}</sup>
+        <sup>Current Card {currCard} of {cards.length-1}</sup>
       <i id="add-button" className="nav-buttons" onClick={addCard}>+ Add Card</i>
-        <FlashCards cards={cards} editCard={editCard} deleteCard={deleteCard} getCardData={getCardData} currCard={currCard} />        
+        <FlashCards cards={cards} editCard={editCard} deleteCard={deleteCard} setCurrCard={setCurrCard} getCardData={getCardData} currCard={currCard} changeIndex={changeIndex} />        
       </main>
       <div id="prev-button" className="nav-buttons" onClick={()=>changeIndex("prev")}>&lt;&nbsp;Previous</div>
       <div id="next-button" className="nav-buttons"  onClick={()=>changeIndex("next")}>Next&nbsp;&gt;</div>
       <footer>
-        <SaveLoadWidget resetCardsCB={resetCards} saveLocalCB={saveLocal} saveCB={saveFile} loadCB={loadFile} fileName = {fileName} setFileName={setFileName} />
-
+        <SaveLoadWidget resetCardsCB={resetCards} saveLocalCB={saveLocal} saveCB={saveFile} loadCB={loadFile} fileName = {fileName} setFileName={setFileName} setCurrCard={setCurrCard}/>
+        {/*<CardSelector setFilters={setFilters} filters={filters}/>*/}
       </footer>
     </div>
   );

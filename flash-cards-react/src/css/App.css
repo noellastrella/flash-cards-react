@@ -15,6 +15,8 @@ footer{
   width: 100%;
   display: flex;
   height: 5em;
+  justify-content: space-evenly;
+  padding: 2em;
 }
 
 #addButton{
@@ -61,7 +63,7 @@ footer{
 #add-button{
   position: absolute;
   left: 45%;
-  top: 5%;
+  top: 2%;
 }
 
 #prev-button{
@@ -74,4 +76,12 @@ footer{
   position: absolute;
   right: 5%;
   top: 50%;
+}
+
+#card-filters{
+  color:#FFF;
+}
+
+#card-filters fieldset label{
+  margin-left: 1em;
 }

@@ -12,20 +12,20 @@
 }
 
 .trash-icon{
-    right: -6.5em;
-    bottom: 1em;
+    right: -4.5em;
+    bottom: 5%;
 }
 
 .flip-card-icon{
-    right: -6.5em;
-    top: 3em;
+    right: -4.5em;
+    top: 5%;
     transform-style: preserve-3d;
     opacity: 0;
 }
 
 .favorite-icon{
-    left: -1.5em;
-    bottom: 5%;
+    right: 0.5em;
+    top: 5%;
     transform-style: preserve-3d;
     opacity: 0;
 }
@@ -74,7 +74,7 @@ li .flashCard{
     position: absolute;
     width: 100%;
     height: 100%;
-    margin: 2em;
+    
     background-color: white;
     border: 1px solid #CCC; 
     perspective: 800px;
@@ -99,7 +99,7 @@ li .flashCard .cardFront, li .flashCard .cardBack{
     display: block;
     width: 100%;
     height: 100%;
-    font-size: 3em;
+    font-size: 2.5em;
     position: absolute;
     display: flex;
     align-items: center;

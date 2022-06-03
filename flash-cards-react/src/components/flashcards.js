@@ -10,13 +10,12 @@ function FlashCards(props){
             {
                 cards.map((e,i)=>{
                     return (
-                        <FlashCard key={"card-"+i} editCard={props.editCard} deleteCard={props.deleteCard} getCardData={props.getCardData} index={i} textFront={e.front.text} textBack={e.back.text}  currCard={props.currCard}/>
+                        <FlashCard key={"card-"+i} editCard={props.editCard} deleteCard={props.deleteCard} getCardData={props.getCardData} index={i} textFront={e.front.text} textBack={e.back.text}  currCard={props.currCard} setCurrCard={props.setCurrCard}/>
                     )
                 })
             }
         </ul>
     );
 }
-
 
 export default FlashCards
