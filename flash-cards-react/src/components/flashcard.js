@@ -13,11 +13,11 @@ const FlashCard = (props)=> {
 
     const styleFolded = {transform: `translateX(${-10+getRandom(-10)+10}px)  translateZ(${30*props.index}px) translateY(${700+(props.index*5)}px) rotate3d(${getRandom(100)+1800}, ${getRandom(1000)-500}, ${getRandom(-20)-200}, ${getRandom(20)+0}deg)`};
     //const [styleFolded, setStyleFolded] = useState(defaultCardPosition);
-    const [nudgeRightClass, setNudgeRightClass] = useState("");
+    //const [nudgeRightClass, setNudgeRightClass] = useState("");
 
     let favoriteIcon = context.getCardData(props.index).favorite ? "./images/heart.svg":  "./images/heart-off.svg";
-    let incorrectIcon = context.getCardData(props.index).correct =="no" ? "./images/wrong.svg":  "./images/wrong-off.svg";
-    let correctIcon = context.getCardData(props.index).correct =="yes" ? "./images/right.svg":  "./images/right-off.svg";
+    let incorrectIcon = context.getCardData(props.index).correct ==="no" ? "./images/wrong.svg":  "./images/wrong-off.svg";
+    let correctIcon = context.getCardData(props.index).correct ==="yes" ? "./images/right.svg":  "./images/right-off.svg";
 
     React.useEffect(() => {
         if(props.index === currCard){
@@ -57,12 +57,6 @@ const FlashCard = (props)=> {
         context.editCard(props.index, "incorrect")
     }
 
-    const nudgeRight = (e) => {
-        if(currCard !== props.index){
-            nudgeRightClass ===""? setNudgeRightClass("nudgeRight") : setNudgeRightClass("")
-        }
-    }
-
     const makeProminent = () =>{
         if(currCard !== props.index) context.setCurrCard(props.index)
     }
@@ -75,23 +69,23 @@ const FlashCard = (props)=> {
     }
 
     return(
-        <li style={theStyle} className={`${nudgeRightClass} `} alt={`curr:${currCard} i:${props.index}`} onClick={makeProminent}>
+        <li style={theStyle} alt={`curr:${currCard} i:${props.index}`} onClick={makeProminent}>
             <section className={`flashCard ${cardStyle}`} >
                 <div className="cardFront">
                     <ContentEditable html={cardFront} onChange={handleChangeFrontFace} />
-                    <img src={favoriteIcon} className="icons favorite-icon" onClick={handleFavorite}/>
+                    <img src={favoriteIcon} className="icons favorite-icon" onClick={handleFavorite} alt="favorite"/>
                 </div>
                 <div className="cardBack">
                     <ContentEditable html={cardBack} onChange={handleChangeBackFace} />
-                    <img src={correctIcon} className="icons correct-icon" onClick={handleCorrect}/>
-                    <img src={incorrectIcon} className="icons incorrect-icon" onClick={handleIncorrect}/>
+                    <img src={correctIcon} className="icons correct-icon" onClick={handleCorrect} alt="mark correct"/>
+                    <img src={incorrectIcon} className="icons incorrect-icon" onClick={handleIncorrect} alt="mark incorrect"/>
                 </div>
                 <div>
                     <sup>{props.index}</sup>
                 </div>
             </section>
-            <img src="./images/flip.svg" className="icons flip-card-icon" onClick={flipCard}/>
-            <img src="./images/trash.svg" className="icons trash-icon" onClick={deleteCard}/>
+            <img src="./images/flip.svg" className="icons flip-card-icon" onClick={flipCard} alt="flip card"/>
+            <img src="./images/trash.svg" className="icons trash-icon" onClick={deleteCard} alt="delete card"/>
             
         </li>
     );

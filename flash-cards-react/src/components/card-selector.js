@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useContext} from 'react';
+import {AppContext} from '../App';
 
 function CardSelector(props){
     const [favoritesChecked, setFavoritesChecked]    = React.useState(true);
@@ -6,11 +7,13 @@ function CardSelector(props){
     const [correctChecked, setCorrectChecked]        = React.useState(true);
     const [unlabeledChecked, setUnlabeledChecked]    = React.useState(true);
 
-    let filters = props.filters;
+    const context = useContext(AppContext)
+
+    let filters = context.filters;
 
     const changeFilters = () =>{
-        props.setFilters(props.filters);
-        console.log(props.filters)
+        context.setFilters(context.filters);
+        console.log(context.filters)
     }
 
     const toggleFavorites   =   ()  => {

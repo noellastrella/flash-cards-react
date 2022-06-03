@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {Template, cardsToAdd}  from './js/init';
 import FlashCards from './components/flashcards';
 import SaveLoadWidget from './components/save-load-widget';
@@ -42,7 +42,7 @@ function App() {
     modifyCardsFiltered(
       cards.filter(e=>{
         let pass = false;
-          if(e.favorite==true && filters.favorite==true) pass = true;
+          if(e.favorite===true && filters.favorite===true) pass = true;
 
 
         return pass;
@@ -50,7 +50,7 @@ function App() {
     )
 
 
-  },[filters])
+  },[filters, cards])
   
   // ------------------ KEY PRESS HANDLER
 
@@ -195,7 +195,6 @@ function App() {
     let a = document.createElement("a");
         document.body.appendChild(a);
 
-        let save_btn = document.querySelector("#save");
         let theFileName = fileName? fileName: "flashcards.cards"
         let txt = JSON.stringify(cards);
         let file = new Blob([txt], {type: "text/plain;charset=utf-8"});
@@ -236,9 +235,9 @@ function App() {
 
   // ------------------ toggleFilters
 
-  const toggleFilters = (e) =>{
+  // const toggleFilters = (e) =>{
 
-  }
+  // }
 
   // ------------------ GET CARD DATA
 
@@ -248,7 +247,7 @@ function App() {
 
   // ------------------ 
   return (
-    <AppContext.Provider value={{cards, editCard, deleteCard, currCard, setCurrCard, getCardData, changeIndex, resetCards, saveLocal, saveFile, loadFile, fileName, setFileName}}>
+    <AppContext.Provider value={{cards, editCard, deleteCard, currCard, setCurrCard, getCardData, changeIndex, resetCards, saveLocal, saveFile, loadFile, fileName, setFileName, setFilters, filters}}>
       <div className="App">
         <header className=""></header>
         <main>
@@ -260,7 +259,7 @@ function App() {
         <div id="next-button" className="nav-buttons"  onClick={()=>changeIndex("next")}>Next&nbsp;&gt;</div>
         <footer>
           <SaveLoadWidget/>
-          {/*<CardSelector setFilters={setFilters} filters={filters}/>*/}
+          <CardSelector />
         </footer>
       </div>
     </AppContext.Provider>
