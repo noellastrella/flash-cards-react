@@ -1,16 +1,17 @@
-import React from "react";
+import React, {useContext} from "react";
 import FlashCard from './flashcard';
+import { AppContext } from '../App.js';
 
 function FlashCards(props){
-   
-    let cards = props.cards;
+    const context = useContext(AppContext)
+    let cards = context.cards;
     
     return(
         <ul id="flashCardContainer" >
             {
                 cards.map((e,i)=>{
                     return (
-                        <FlashCard key={"card-"+i} editCard={props.editCard} deleteCard={props.deleteCard} getCardData={props.getCardData} index={i} textFront={e.front.text} textBack={e.back.text}  currCard={props.currCard} setCurrCard={props.setCurrCard}/>
+                        <FlashCard key={"card-"+i} index={i} />
                     )
                 })
             }

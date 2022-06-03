@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import ContentEditable from 'react-contenteditable'
+import { AppContext } from '../App.js';
 
-function FlashCard(props){
+const FlashCard = (props)=> {
     let flipped = "";
-    let currCard = props.currCard;
+    const context = useContext(AppContext);
+    let currCard = context.currCard;
 
     const defaultCardPosition = {transform: `translateY(${80}px)`}
     const [cardStyle, setCardStyle] = useState("cont");
@@ -13,9 +15,9 @@ function FlashCard(props){
     //const [styleFolded, setStyleFolded] = useState(defaultCardPosition);
     const [nudgeRightClass, setNudgeRightClass] = useState("");
 
-    let favoriteIcon = props.getCardData(props.index).favorite ? "./images/heart.svg":  "./images/heart-off.svg";
-    let incorrectIcon = props.getCardData(props.index).correct =="no" ? "./images/wrong.svg":  "./images/wrong-off.svg";
-    let correctIcon = props.getCardData(props.index).correct =="yes" ? "./images/right.svg":  "./images/right-off.svg";
+    let favoriteIcon = context.getCardData(props.index).favorite ? "./images/heart.svg":  "./images/heart-off.svg";
+    let incorrectIcon = context.getCardData(props.index).correct =="no" ? "./images/wrong.svg":  "./images/wrong-off.svg";
+    let correctIcon = context.getCardData(props.index).correct =="yes" ? "./images/right.svg":  "./images/right-off.svg";
 
     React.useEffect(() => {
         if(props.index === currCard){
@@ -32,27 +34,27 @@ function FlashCard(props){
     }
 
     const deleteCard=(e)=>{
-        props.deleteCard(props.index)
+        context.deleteCard(props.index)
     }
 
     const handleChangeBackFace = (e) => {
-        props.editCard(props.index, "back", e.target.value)
+        context.editCard(props.index, "back", e.target.value)
     }
 
     const handleChangeFrontFace = (e) => {
-        props.editCard(props.index, "front", e.target.value)
+        context.editCard(props.index, "front", e.target.value)
     }
 
     const handleFavorite = (e) =>{
-        props.editCard(props.index, "favorite")
+        context.editCard(props.index, "favorite")
     }
 
     const handleCorrect = (e) =>{
-        props.editCard(props.index, "correct")
+        context.editCard(props.index, "correct")
     }
 
     const handleIncorrect = (e) =>{
-        props.editCard(props.index, "incorrect")
+        context.editCard(props.index, "incorrect")
     }
 
     const nudgeRight = (e) => {
@@ -62,11 +64,11 @@ function FlashCard(props){
     }
 
     const makeProminent = () =>{
-        if(currCard !== props.index) props.setCurrCard(props.index)
+        if(currCard !== props.index) context.setCurrCard(props.index)
     }
 
-    let cardFront = props.getCardData(props.index).front.text;
-    let cardBack = props.getCardData(props.index).back.text;
+    let cardFront = context.getCardData(props.index).front.text;
+    let cardBack = context.getCardData(props.index).back.text;
 
     function getRandom (num){
         return (Math.random()*num)+1;

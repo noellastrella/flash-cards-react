@@ -1,17 +1,14 @@
-import React, { useState } from "react";
-
+import React, { useState, useContext } from "react";
+import { AppContext } from '../App.js';
 
 
 function SaveLoadWidget(props){
 
     let filename = "x";
-    //mock data
-
+    const context = useContext(AppContext);
 
     const handleChange=(e)=>{
-        
-        console.log(e)
-        props.setFileName(e);
+        context.setFileName(e);
     }
 
     
@@ -22,13 +19,13 @@ function SaveLoadWidget(props){
                 
                 {/* <input type="text" placeholder="filename.cards" value={props.fileName} onChange={e=>handleChange(e.target.value)}/> */}
                 <label for="file">Save</label>
-                <button id="save-button" onClick={props.saveLocalCB}>SAVE</button>
-                <button id="save-button" onClick={props.saveCB}>DOWNLOAD SAVE FILE</button>
+                <button id="save-button" onClick={context.saveLocal}>SAVE</button>
+                <button id="save-button" onClick={context.saveFile}>DOWNLOAD SAVE FILE</button>
 
                 <label for="file">Load File: </label>
-                <input type="file" id="load-button" onChange={props.loadCB} value="" />
+                <input type="file" id="load-button" onChange={context.loadFile} value="" />
                 
-                <button id="save-button" onClick={props.resetCardsCB}>RESET CARDS</button>
+                <button id="save-button" onClick={context.resetCards}>RESET CARDS</button>
 
             </div>
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import {Template, cardsToAdd}  from './js/init';
 import FlashCards from './components/flashcards';
 import SaveLoadWidget from './components/save-load-widget';
@@ -7,19 +7,21 @@ import CardSelector from './components/card-selector';
 import './css/App.css';
 import './css/flashCard.css';
 
+export const AppContext = React.createContext();
+
 function App() {
-  const [cards, modifyCards] = React.useState([]);
-  const [cardsFiltered, modifyCardsFiltered] = React.useState([]);
+  const [cards, modifyCards] = useState([]);
+  const [cardsFiltered, modifyCardsFiltered] = useState([]);
 
   
-  const [fileName, setFileName] = React.useState('');
+  const [fileName, setFileName] = useState('');
 //  const [keyPressed, setKeyPressed] = useState(false);
-  const [currCard, setCurrCard] = React.useState(0);
-  const [filters, setFilters] = React.useState({})
+  const [currCard, setCurrCard] = useState(0);
+  const [filters, setFilters] = useState({})
   
   // ------------------ START
 
-  React.useEffect(()=>{ 
+  useEffect(()=>{ 
     let localStorageCards = localStorage.getItem('flashCards');
     
     if(localStorageCards){
@@ -36,7 +38,7 @@ function App() {
     })
   },[]) // load CARDS
 
-  React.useEffect (()=>{
+  useEffect (()=>{
     modifyCardsFiltered(
       cards.filter(e=>{
         let pass = false;
@@ -55,7 +57,7 @@ function App() {
   const useKeyPress = (targetKey) => {
     const [keyPressed, setKeyPressed] = useState(false);
   
-    React.useEffect(() => {
+    useEffect(() => {
       const downHandler = ({ key }) => {
         if (key === targetKey) {
           setKeyPressed(true);
@@ -83,13 +85,13 @@ function App() {
   const arrowUpPressed = useKeyPress("ArrowLeft");
   const arrowDownPressed = useKeyPress("ArrowRight");
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (arrowUpPressed) {
       changeIndex("prev")
     }
   }, [arrowUpPressed]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (arrowDownPressed) {
       changeIndex("next")
     }
@@ -246,20 +248,23 @@ function App() {
 
   // ------------------ 
   return (
-    <div className="App">
-      <header className=""></header>
-      <main>
-        <sup>Current Card {currCard} of {cards.length-1}</sup>
-      <i id="add-button" className="nav-buttons" onClick={addCard}>+ Add Card</i>
-        <FlashCards cards={cards} editCard={editCard} deleteCard={deleteCard} setCurrCard={setCurrCard} getCardData={getCardData} currCard={currCard} changeIndex={changeIndex} />        
-      </main>
-      <div id="prev-button" className="nav-buttons" onClick={()=>changeIndex("prev")}>&lt;&nbsp;Previous</div>
-      <div id="next-button" className="nav-buttons"  onClick={()=>changeIndex("next")}>Next&nbsp;&gt;</div>
-      <footer>
-        <SaveLoadWidget resetCardsCB={resetCards} saveLocalCB={saveLocal} saveCB={saveFile} loadCB={loadFile} fileName = {fileName} setFileName={setFileName} setCurrCard={setCurrCard}/>
-        {/*<CardSelector setFilters={setFilters} filters={filters}/>*/}
-      </footer>
-    </div>
+    <AppContext.Provider value={{cards, editCard, deleteCard, currCard, setCurrCard, getCardData, changeIndex, resetCards, saveLocal, saveFile, loadFile, fileName, setFileName}}>
+      <div className="App">
+        <header className=""></header>
+        <main>
+          <sup>Current Card {currCard} of {cards.length-1}</sup>
+        <i id="add-button" className="nav-buttons" onClick={addCard}>+ Add Card</i>
+          <FlashCards  />        
+        </main>
+        <div id="prev-button" className="nav-buttons" onClick={()=>changeIndex("prev")}>&lt;&nbsp;Previous</div>
+        <div id="next-button" className="nav-buttons"  onClick={()=>changeIndex("next")}>Next&nbsp;&gt;</div>
+        <footer>
+          <SaveLoadWidget/>
+          {/*<CardSelector setFilters={setFilters} filters={filters}/>*/}
+        </footer>
+      </div>
+    </AppContext.Provider>
+      
   );
 }
 
