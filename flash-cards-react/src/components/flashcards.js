@@ -1,11 +1,12 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import FlashCard from './flashcard';
 import { AppContext } from '../App.js';
 
 function FlashCards(props){
     const context = useContext(AppContext)
-    let cards = context.cards;
     
+    let cards = context.cards;
+
     return(
         <ul id="flashCardContainer" >
             {

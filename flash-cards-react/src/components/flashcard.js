@@ -1,15 +1,17 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ContentEditable from 'react-contenteditable'
 import { AppContext } from '../App.js';
 
 const FlashCard = (props)=> {
-    let flipped = "";
+    //let flipped = false;
     const context = useContext(AppContext);
     let currCard = context.currCard;
 
     const defaultCardPosition = {transform: `translateY(${80}px)`}
     const [cardStyle, setCardStyle] = useState("cont");
     const [theStyle, setTheStyle] = useState(defaultCardPosition);
+
+    const [flipped, setFlipped] = useState(false);
 
     const styleFolded = {transform: `translateX(${-10+getRandom(-10)+10}px)  translateZ(${30*props.index}px) translateY(${700+(props.index*5)}px) rotate3d(${getRandom(100)+1800}, ${getRandom(1000)-500}, ${getRandom(-20)-200}, ${getRandom(20)+0}deg)`};
     //const [styleFolded, setStyleFolded] = useState(defaultCardPosition);
@@ -19,7 +21,7 @@ const FlashCard = (props)=> {
     let incorrectIcon = context.getCardData(props.index).correct ==="no" ? "./images/wrong.svg":  "./images/wrong-off.svg";
     let correctIcon = context.getCardData(props.index).correct ==="yes" ? "./images/right.svg":  "./images/right-off.svg";
 
-    React.useEffect(() => {
+    useEffect(() => {
         if(props.index === currCard){
             setTheStyle(defaultCardPosition);
         }else{
@@ -28,13 +30,21 @@ const FlashCard = (props)=> {
 
     }, [currCard]);
 
+
+
     const flipCard = (e) => {
-        flipped = flipped === "flipped" ? "" : "flipped";
-        setCardStyle(flipped);
+        
+        console.log("\n\n====",flipped)
+        //flipped = flipped === "flipped" ? "" : "flipped";
+        setFlipped(!flipped)
+        console.log(">>>",flipped)
+        setCardStyle(flipped?"flipped":"");
     }
 
     const deleteCard=(e)=>{
-        context.deleteCard(props.index)
+        if(window.confirm("Are you sure you want to delete this card?")){
+            context.deleteCard(props.index)
+        }
     }
 
     const handleChangeBackFace = (e) => {

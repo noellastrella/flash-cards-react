@@ -2,46 +2,33 @@ import React, {useContext} from 'react';
 import {AppContext} from '../App';
 
 function CardSelector(props){
-    const [favoritesChecked, setFavoritesChecked]    = React.useState(true);
-    const [incorrectChecked, setIncorrectChecked]    = React.useState(true);
-    const [correctChecked, setCorrectChecked]        = React.useState(true);
-    const [unlabeledChecked, setUnlabeledChecked]    = React.useState(true);
+    const [favoritesChecked,    setFavoritesChecked]    = React.useState(true);
+    const [incorrectChecked,    setIncorrectChecked]    = React.useState(true);
+    const [correctChecked,      setCorrectChecked]      = React.useState(true);
+    const [unlabeledChecked,    setUnlabeledChecked]    = React.useState(true);
 
     const context = useContext(AppContext)
 
     let filters = context.filters;
 
-    const changeFilters = () =>{
-        context.setFilters(context.filters);
-        console.log(context.filters)
-    }
-
     const toggleFavorites   =   ()  => {
         setFavoritesChecked(!favoritesChecked);
-
-        filters.favorite = !favoritesChecked;
-        changeFilters();
+        context.setFilters({...filters, favorite : !favoritesChecked});
     }
     
     const toggleIncorrect   =   ()  => {
         setIncorrectChecked(!incorrectChecked);
-        
-        filters.incorrect = !incorrectChecked;
-        changeFilters();
+        context.setFilters({...filters, incorrect : !incorrectChecked});
     }
     
     const toggleCorrect     =   ()  => {
         setCorrectChecked(!correctChecked);
-
-        filters.correct = correctChecked;
-        changeFilters();
+        context.setFilters({...filters, correct : !correctChecked});
     }
     
     const toggleUnlabeled   =   ()  => {
         setUnlabeledChecked(!unlabeledChecked);
-
-        filters.unlabeled = !unlabeledChecked;
-        changeFilters();
+        context.setFilters({...filters, unlabeled : !unlabeledChecked});
     }
 
     return(
@@ -51,19 +38,19 @@ function CardSelector(props){
                     <legend>Card Filter</legend>
 
                     <label>
-                        <input type="checkbox" name="card-filter" value="favorites" onClick={toggleFavorites} checked={favoritesChecked}></input>
+                        <input type="checkbox" onClick={toggleFavorites} checked={favoritesChecked}/>
                         &nbsp;Favorites 
                     </label>
                     <label>
-                        <input type="checkbox" name="card-filter" value="incorrect" onClick={toggleIncorrect} checked={incorrectChecked}></input>
+                        <input type="checkbox" onClick={toggleIncorrect} checked={incorrectChecked}/>
                         &nbsp;Incorrect 
                     </label>
                     <label>
-                        <input type="checkbox" name="card-filter" value="correct" onClick={toggleCorrect} checked={correctChecked}></input>
+                        <input type="checkbox" onClick={toggleCorrect} checked={correctChecked}/>
                         &nbsp;Correct
                     </label>
                     <label>
-                        <input type="checkbox" name="card-filter" value="unlabeled" onClick={toggleUnlabeled} checked={unlabeledChecked}></input>
+                        <input type="checkbox" onClick={toggleUnlabeled} checked={unlabeledChecked}/>
                         &nbsp;Unlabeled
                     </label>
                 </fieldset>

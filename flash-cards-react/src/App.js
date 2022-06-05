@@ -13,11 +13,10 @@ function App() {
   const [cards, modifyCards] = useState([]);
   const [cardsFiltered, modifyCardsFiltered] = useState([]);
 
-  
   const [fileName, setFileName] = useState('');
 //  const [keyPressed, setKeyPressed] = useState(false);
   const [currCard, setCurrCard] = useState(0);
-  const [filters, setFilters] = useState({})
+  const [filters, setFilters] = useState({});
   
   // ------------------ START
 
@@ -37,27 +36,13 @@ function App() {
       favorite  : true 
     })
   },[]) // load CARDS
-
-  useEffect (()=>{
-    modifyCardsFiltered(
-      cards.filter(e=>{
-        let pass = false;
-          if(e.favorite===true && filters.favorite===true) pass = true;
-
-
-        return pass;
-      })
-    )
-
-
-  },[filters, cards])
   
   // ------------------ KEY PRESS HANDLER
 
   const useKeyPress = (targetKey) => {
     const [keyPressed, setKeyPressed] = useState(false);
   
-    useEffect(() => {
+    useEffect(() => { 
       const downHandler = ({ key }) => {
         if (key === targetKey) {
           setKeyPressed(true);
@@ -97,6 +82,32 @@ function App() {
     }
   }, [arrowDownPressed]);
 
+  // ------------------ FILTERS
+
+  useEffect(()=>{
+    console.log("running...");
+
+    let temp = cards.filter((e)=>{
+        console.log(e);
+        let pass = false;
+        console.log(e.favorite, filters.favorite)
+        
+        if(filters.favorite)
+        if(e.favorite && filters.favorite){
+            pass=true;
+        }
+        if(e.correct=="incorrect" && filters.incorrect) pass=true;
+        if(e.correct=="correct" && filters.correct) pass=true;
+        if(!filters.favorite && e.correct=="n/a" && filters.unlabeled) pass=true;
+
+        return pass;
+    })
+
+    modifyCardsFiltered(temp);
+    console.log(cardsFiltered)
+    
+}, [filters])
+  
   // ------------------ CHANGE INDEX
 
     const changeIndex=(e)=>{
@@ -105,15 +116,18 @@ function App() {
       switch (e){
         case 'prev':
           temp = temp>0?temp-=1:temp;
-          setCurrCard(temp);
           break;
         case 'next':
           temp = temp<cards.length-1? temp+=1:temp;
-          setCurrCard(temp);
           break;
+        case 'random':
+          temp = Math.floor(Math.random()*cards.length);
+          break
         default:
           break;
       }
+
+      setCurrCard(temp);
     }
 
   // ------------------ RESET CARDS
@@ -178,8 +192,6 @@ function App() {
 
   const deleteCard = (index)=>{
     let tempCards = cards.filter((e,i)=>{
-      console.log(i!==index)
-      if(i===index) console.log("ERASE ME::",i,index);
       return i!==index;
     })
 
@@ -233,12 +245,6 @@ function App() {
     reader.readAsText(e.target.files[0]);
   }
 
-  // ------------------ toggleFilters
-
-  // const toggleFilters = (e) =>{
-
-  // }
-
   // ------------------ GET CARD DATA
 
   const getCardData = (index) =>{
@@ -255,7 +261,9 @@ function App() {
         <i id="add-button" className="nav-buttons" onClick={addCard}>+ Add Card</i>
           <FlashCards  />        
         </main>
+
         <div id="prev-button" className="nav-buttons" onClick={()=>changeIndex("prev")}>&lt;&nbsp;Previous</div>
+        <div id="random-button" className="nav-buttons" onClick={()=>changeIndex("random")}>Random</div>
         <div id="next-button" className="nav-buttons"  onClick={()=>changeIndex("next")}>Next&nbsp;&gt;</div>
         <footer>
           <SaveLoadWidget/>
@@ -263,7 +271,6 @@ function App() {
         </footer>
       </div>
     </AppContext.Provider>
-      
   );
 }
 
