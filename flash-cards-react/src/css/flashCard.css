@@ -1,3 +1,5 @@
+
+
 .flip-card-icon{
     right: -1em;
     top: 3px;
@@ -34,7 +36,7 @@
 
 .correct-icon{
     left: 40%;
-    bottom: 5%;
+    bottom: -25%;
     transform-style: preserve-3d;
     -webkit-transform-style: preserve-3d;
     opacity: 0;
@@ -42,7 +44,7 @@
 
 .incorrect-icon{
     left: 50%;
-    bottom: 5%;
+    bottom: -25%;
     transform-style: preserve-3d;
     -webkit-transform-style: preserve-3d;
     opacity: 0;
@@ -80,7 +82,6 @@ li .flashCard{
     position: absolute;
     width: 100%;
     height: 100%;
-    
     
     border: 1px solid #CCC; 
     perspective: 800px;
@@ -131,10 +132,19 @@ li .flashCard .cardBack{
 }
 
 
-#cardFront div, #cardBack div{
+.cardFront div, .cardBack div{
     max-width: 90%;
 }
+
+.cardFront sup{
+    position: absolute;
+    top:5px;
+    left:5px;
+    font-size: .35em;
+}
+
 
 .nudgeRight{
     margin-right: -40em;
 }
+

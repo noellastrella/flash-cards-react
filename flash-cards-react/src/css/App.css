@@ -86,6 +86,38 @@ footer{
   top: 45%;
 }
 
+
+@media screen and (max-width:800px) {
+  #add-button{
+    position: absolute;
+    left: 47%;
+    padding: 0 .5em;
+    top: 2%;
+  }
+
+  #prev-button span, #next-button span, #add-button span{
+    display: none;
+  }
+
+  #prev-button{
+    position: absolute;
+    left: 0%;
+    top: 45%;
+  }
+
+  #random-button{
+    position: absolute;
+    left: 40%;
+    top: 65%;
+  }
+
+  #next-button{
+    position: absolute;
+    right: 0%;
+    top: 45%;
+  }
+}
+
 #card-filters{
   color:#FFF;
 }

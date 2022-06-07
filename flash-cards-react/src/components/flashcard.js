@@ -11,7 +11,7 @@ const FlashCard = (props)=> {
     const [cardStyle, setCardStyle] = useState("cont");
     const [theStyle, setTheStyle] = useState(defaultCardPosition);
 
-    const [flipped, setFlipped] = useState(false);
+    const [flipped, setFlipped] = useState("");
 
     const styleFolded = {transform: `translateX(${-10+getRandom(-10)+10}px)  translateZ(${30*props.index}px) translateY(${700+(props.index*5)}px) rotate3d(${getRandom(100)+1800}, ${getRandom(1000)-500}, ${getRandom(-20)-200}, ${getRandom(20)+0}deg)`};
     //const [styleFolded, setStyleFolded] = useState(defaultCardPosition);
@@ -81,21 +81,21 @@ const FlashCard = (props)=> {
     return(
         <li style={theStyle} alt={`curr:${currCard} i:${props.index}`} onClick={makeProminent}>
             <section className={`flashCard ${cardStyle}`} >
+            
                 <div className="cardFront">
+                    <sup>{props.index}</sup>        
                     <ContentEditable html={cardFront} onChange={handleChangeFrontFace} />
                     <img src={favoriteIcon} className="icons favorite-icon" onClick={handleFavorite} alt="favorite"/>
                 </div>
                 <div className="cardBack">
                     <ContentEditable html={cardBack} onChange={handleChangeBackFace} />
-                    <img src={correctIcon} className="icons correct-icon" onClick={handleCorrect} alt="mark correct"/>
-                    <img src={incorrectIcon} className="icons incorrect-icon" onClick={handleIncorrect} alt="mark incorrect"/>
                 </div>
-                <div>
-                    <sup>{props.index}</sup>
-                </div>
+
             </section>
             <img src="./images/flip.svg" className="icons flip-card-icon" onClick={flipCard} alt="flip card"/>
             <img src="./images/trash.svg" className="icons trash-icon" onClick={deleteCard} alt="delete card"/>
+            <img src={correctIcon} className="icons correct-icon" onClick={handleCorrect} alt="mark correct"/>
+            <img src={incorrectIcon} className="icons incorrect-icon" onClick={handleIncorrect} alt="mark incorrect"/>
             
         </li>
     );

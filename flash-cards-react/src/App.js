@@ -90,16 +90,21 @@ function App() {
     let temp = cards.filter((e)=>{
         console.log(e);
         let pass = false;
-        console.log(e.favorite, filters.favorite)
+        
         
         if(filters.favorite)
+        
         if(e.favorite && filters.favorite){
             pass=true;
         }
-        if(e.correct=="incorrect" && filters.incorrect) pass=true;
-        if(e.correct=="correct" && filters.correct) pass=true;
-        if(!filters.favorite && e.correct=="n/a" && filters.unlabeled) pass=true;
 
+        if(e.correct=="no" && filters.incorrect) pass=true;
+        
+        if(e.correct=="yes" && filters.correct) pass=true;
+        
+        if(!e.favorite && e.correct=="n/a" && filters.unlabeled) pass=true;
+        setCurrCard(0)
+        console.log(">>",filters, `Fav Filter: ${filters.favorite} | obj fav: ${e.favorite} | correct:  ${e.correct}`, "PASS:", pass)
         return pass;
     })
 
@@ -118,9 +123,11 @@ function App() {
           temp = temp>0?temp-=1:temp;
           break;
         case 'next':
+          //temp = temp<cardsFiltered.length-1? temp+=1:temp;
           temp = temp<cards.length-1? temp+=1:temp;
           break;
         case 'random':
+          //temp = Math.floor(Math.random()*cardsFiltered.length);
           temp = Math.floor(Math.random()*cards.length);
           break
         default:
@@ -253,21 +260,21 @@ function App() {
 
   // ------------------ 
   return (
-    <AppContext.Provider value={{cards, editCard, deleteCard, currCard, setCurrCard, getCardData, changeIndex, resetCards, saveLocal, saveFile, loadFile, fileName, setFileName, setFilters, filters}}>
+    <AppContext.Provider value={{cards:cards, editCard, deleteCard, currCard, setCurrCard, getCardData, changeIndex, resetCards, saveLocal, saveFile, loadFile, fileName, setFileName, setFilters, filters}}>
       <div className="App">
         <header className=""></header>
         <main>
           <sup>Current Card {currCard} of {cards.length-1}</sup>
-        <i id="add-button" className="nav-buttons" onClick={addCard}>+ Add Card</i>
+        <i id="add-button" className="nav-buttons" onClick={addCard}>+<span> Add Card</span></i>
           <FlashCards  />        
         </main>
 
-        <div id="prev-button" className="nav-buttons" onClick={()=>changeIndex("prev")}>&lt;&nbsp;Previous</div>
+        <div id="prev-button" className="nav-buttons" onClick={()=>changeIndex("prev")}>&lt;&nbsp;<span>Previous</span></div>
         <div id="random-button" className="nav-buttons" onClick={()=>changeIndex("random")}>Random</div>
-        <div id="next-button" className="nav-buttons"  onClick={()=>changeIndex("next")}>Next&nbsp;&gt;</div>
+        <div id="next-button" className="nav-buttons"  onClick={()=>changeIndex("next")}><span>Next</span>&nbsp;&gt;</div>
         <footer>
           <SaveLoadWidget/>
-          <CardSelector />
+          { /*<CardSelector  /> */ }
         </footer>
       </div>
     </AppContext.Provider>
