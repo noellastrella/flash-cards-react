@@ -4,8 +4,8 @@ import FlashCards from './components/flashcards';
 import SaveLoadWidget from './components/save-load-widget';
 import CardSelector from './components/card-selector';
 
-import './css/App.css';
-import './css/flashCard.css';
+import './css/App.scss';
+import './css/flashCard.scss';
 
 export const AppContext = React.createContext();
 

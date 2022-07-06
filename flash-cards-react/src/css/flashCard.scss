@@ -1,0 +1,142 @@
+@import './_variables.scss';
+@import './_mixins.scss';
+@import './_partials';
+
+%card-styling{
+    display: block;
+    width: 100%;
+    height: 100%;
+    font-size: 2.5em;
+    position: absolute;
+    
+    @include backfaceVisibility;
+    @include centered;  
+}
+
+.icons{
+    width: 3rem;
+    height: 3rem;
+    position: absolute;
+    transition: all .2s;
+    opacity: 0;
+    
+    &.flip-card-icon{
+        right: -1em;
+        top: 3px;
+    }
+
+    &.trash-icon{
+        right: -4.5em;
+        bottom: 5%;
+    }
+
+    &.flip-card-icon{
+        right: -4.5em;
+        top: 5%;
+        opacity: 0;
+        @include preserve3D;
+    }
+
+    &.favorite-icon{
+        right: 0.5em;
+        top: 5%;
+        opacity: 0;
+        @include preserve3D;
+    }
+
+    &.correct-icon{
+        left: 40%;
+        bottom: -25%;
+        opacity: 0;
+        @include preserve3D;
+    }
+
+    &.incorrect-icon{
+        left: 50%;
+        bottom: -25%;
+        opacity: 0;
+        @include preserve3D;
+    }
+}
+
+ul#flashCardContainer li:hover .icons{
+    opacity: 1;
+}
+
+ul#flashCardContainer{
+    list-style-type: none;
+    padding:0;
+    margin: 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+
+    width: 100%;
+    li{
+        perspective: 1200px;
+        position: absolute;
+        width: 36em;
+        height: 18em;
+        transition: all 0.8s;
+        @include backfaceVisibility;
+        @include preserve3D;
+
+        .flashCard{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            
+            border: 1px solid #CCC; 
+            perspective: 800px;
+            transition: transform 0.8s;
+            box-shadow: 0px 9px 7px 1px rgb(0 0 0 / 48%);
+            @include preserve3D;
+            
+            &.flipped{
+                transform: rotateY(180deg);
+                -webkit-transform: rotateY(180deg);
+                
+            }
+
+            *{
+                @include backfaceVisibility;
+            }
+
+            .cardFront{
+                @extend %card-styling;
+                background-color: #fff;
+                background-image:
+                linear-gradient(#eee .1em, transparent .1em);
+                background-size: 100% .5em;
+
+                div{
+                    max-width: 90%;
+                }
+
+                sup{
+                    position: absolute;
+                    top:5px;
+                    left:5px;
+                    font-size: .35em;
+                }
+            }
+            
+            .cardBack{
+                @extend %card-styling;
+                background-color: #CCC;
+    
+                transform: rotateY(180deg);
+                -webkit-transform: rotateY(180deg);
+                div{
+                    max-width: 90%;
+                }
+            }
+        }
+    }    
+}
+
+
+.nudgeRight{
+    margin-right: -40em;
+}
+

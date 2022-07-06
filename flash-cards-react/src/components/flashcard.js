@@ -13,7 +13,7 @@ const FlashCard = (props)=> {
 
     const [flipped, setFlipped] = useState("");
 
-    const styleFolded = {transform: `translateX(${-10+getRandom(-10)+10}px)  translateZ(${30*props.index}px) translateY(${700+(props.index*5)}px) rotate3d(${getRandom(100)+1800}, ${getRandom(1000)-500}, ${getRandom(-20)-200}, ${getRandom(20)+0}deg)`};
+    const styleFolded = {transform: `translateX(${-10+getRandom(-10)+10}px)  translateZ(${30*props.index}px) translateY(${700+(props.index*5)}px) rotate3d(${getRandom(100)+1800}, ${getRandom(1000)-500}, ${getRandom(-20)-200}, ${getRandom(20)-360}deg)`};
     //const [styleFolded, setStyleFolded] = useState(defaultCardPosition);
     //const [nudgeRightClass, setNudgeRightClass] = useState("");
 

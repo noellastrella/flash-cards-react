@@ -1,0 +1,15 @@
+@mixin centered(){
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin preserve3D(){
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+}
+
+@mixin backfaceVisibility(){
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
