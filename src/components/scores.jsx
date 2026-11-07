@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import { AppContext } from '../App.js';
+import { AppContext } from '../App.jsx';
 
 function Scores(props){
     const context = useContext(AppContext)

@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import FlashCard from './flashcard';
-import { AppContext } from '../App.js';
+import { AppContext } from '../App.jsx';
 
 function FlashCards(props){
     const context = useContext(AppContext)

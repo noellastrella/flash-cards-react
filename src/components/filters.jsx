@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
-import { AppContext } from '../App.js';
-import Checkbox from "./checkbox.js";
+import { AppContext } from '../App.jsx';
+import Checkbox from "./checkbox.jsx";
 
 function Filters(props){
     const context = useContext(AppContext)

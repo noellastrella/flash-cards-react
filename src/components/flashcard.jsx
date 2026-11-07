@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import ContentEditable from 'react-contenteditable';
-import { AppContext } from '../App.js';
+import { AppContext } from '../App.jsx';
 
 const FlashCard = (props)=> {
     //console.log("HELLO WORLD")
