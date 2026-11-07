@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
+  base: '', 
   esbuild: {
     // This tells Vite to handle JSX syntax inside plain .js files
     loader: 'jsx',
