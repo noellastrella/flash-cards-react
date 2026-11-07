@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import {Template, cardsToAdd}  from './js/init';
 import FlashCards from './components/flashcards';
 import ShowBackFront from "./components/show-back-front";
+import ShowFavsOnly from "./components/show-favs-only";
+
 import SaveLoadWidget from './components/save-load-widget';
 import CardSelector from './components/card-selector';
 import Scores from './components/scores';
@@ -14,13 +16,18 @@ export const AppContext = React.createContext();
 
 function App() {
   const [cards, modifyCards] = useState([]);
-  const [cardsBackUp, setCardsBackUp] = useState([])
+  const [favCardsArr, modifyFavCardsArray] = useState([]);
+  //const [cardsBackUp, setCardsBackUp] = useState([])
 
   const [fileName, setFileName] = useState('');
 //  const [keyPressed, setKeyPressed] = useState(false);
   const [currCard, setCurrCard] = useState(0);
+  const [currFavCard, setCurrFavCard] = useState(0);
+
   const [filters, setFilters] = useState({});
   const [showBack, setShowBack] = useState(false)
+
+  const [showFavs, setShowFavs] = useState(false)
 
 
 
@@ -32,11 +39,11 @@ function App() {
     
     if(localStorageCards){
       modifyCards(JSON.parse(localStorageCards));
-      setCardsBackUp(JSON.parse(localStorageCards));
+      //setCardsBackUp(JSON.parse(localStorageCards));
     }else{
       loadCards(cardsToAdd);
     }
-
+console.log("test")
     setFilters({
       unlabeled : true,
       incorrect : true,
@@ -165,21 +172,43 @@ function App() {
   
   // ------------------ CHANGE INDEX
 
-    const changeIndex=(e)=>{
-      let temp = currCard;
+    const changeIndex=(e)=>{      
+      let temp;
+
+
+      temp = showFavs ? currFavCard : currCard;
+
 
       switch (e){
-        case 'prev':
-          temp = temp>0?temp-=1:temp;
+        case 'prev':          
+          if(showFavs){
+              console.log(favCardsArr,currFavCard)  
+            temp = currFavCard > 0 ? currFavCard-1 : 0;
+
+              
+              
+          }else{
+              temp = temp>0?temp-=1:temp;
+          }
           break;
         case 'next':
           //temp = temp<cardsFiltered.length-1? temp+=1:temp;
-          temp = temp<cards.length-1? temp+=1:temp;
+          console.log(favCardsArr,currFavCard)  
+          if(showFavs){
+              temp = currFavCard < favCardsArr.length- 1 ? currFavCard+1 : favCardsArr.length- 1 ;
+          }else{
+              temp = temp<cards.length-1? temp+=1:temp;
+          } 
           break;
         case 'random':
           //temp = Math.floor(Math.random()*cardsFiltered.length);
-          temp = Math.floor(Math.random()*cards.length);
-          break
+          if(showFavs){
+            temp = Math.floor(Math.random()*favCardsArr.length);
+          }else{
+            temp = Math.floor(Math.random()*cards.length);
+          }
+
+            break
         case 'shuffle':
           console.log(cards)
           modifyCards(
@@ -190,8 +219,12 @@ function App() {
         default:
           break;
       }
-
-      setCurrCard(temp);
+      if(showFavs){
+        setCurrCard(favCardsArr[temp].index);
+        setCurrFavCard(temp);
+      }else{  
+        setCurrCard(temp);
+      }
     }
   
     // ------------------ RESET CARDS
@@ -206,7 +239,7 @@ function App() {
 
       modifyCards(cards=>[]); //erase all cards
       loadCards(tempCards); //reload cards 
-      setCardsBackUp(tempCards);
+      //setCardsBackUp(tempCards);
       //saveLocal();
     }
   }  
@@ -219,7 +252,7 @@ function App() {
       if(window.confirm("Are you sure you want to reset cards?")){
         localStorage.clear();
         modifyCards(cards=>[]);
-        setCardsBackUp(cards=>[]);
+        //setCardsBackUp(cards=>[]);
         addCard();
       }
     }  
@@ -230,7 +263,7 @@ function App() {
     
     newCards.forEach(e=>{
       modifyCards(cards=>[...cards,e])
-      setCardsBackUp(cards=>[...cards,e])
+      //setCardsBackUp(cards=>[...cards,e])
     })  
     
   }
@@ -248,7 +281,7 @@ function App() {
     })
 
     modifyCards(cards=>[...cards,Template.cardTypes[index]])
-    setCardsBackUp(cards=>[...cards,Template.cardTypes[index]]);
+    //setCardsBackUp(cards=>[...cards,Template.cardTypes[index]]);
     setCurrCard(cards.length);
     saveLocal();
   }
@@ -272,7 +305,15 @@ function App() {
       alert("Error editing cards")
     }
 
-    
+    modifyFavCardsArray(tempCards.filter((e,i)=>{
+      console.log(e)
+      e.index = i;
+      return e.favorite == true;
+    }));
+
+    console.log(cards)
+    console.log(favCardsArr)
+
     modifyCards(cards=>[]); //erase all cards
     loadCards(tempCards); //reload cards 
     saveLocal();
@@ -287,7 +328,7 @@ function App() {
     })
 
     modifyCards(cards=>[...tempCards]); //erase all cards
-    setCardsBackUp(cards=>[...tempCards]);
+    //setCardsBackUp(cards=>[...tempCards]);
     setCurrCard(currCard-1)
   }
 
@@ -331,7 +372,7 @@ function App() {
     function loadData(e2){
         let newCards= JSON.parse(e2.target.result)
         modifyCards(cards=>[...newCards]);
-        setCardsBackUp(cards=>[...newCards]);
+        //setCardsBackUp(cards=>[...newCards]);
         setFileName(e.target.files[0].name);
     }
     
@@ -350,13 +391,14 @@ function App() {
 
   // -------------------
   return (
-    <AppContext.Provider value={{cards:cards, editCard, deleteCard, currCard, setCurrCard, getCardData, changeIndex, resetCards, saveLocal, saveFile, loadFile, fileName, setFileName, setFilters, filterCards, filters, resetScores, setShowBack, showBack}}>
+    <AppContext.Provider value={{cards:cards, editCard, deleteCard, currCard, setCurrCard, getCardData, changeIndex, resetCards, saveLocal, saveFile, loadFile, fileName, setFileName, setFilters, filterCards, filters, resetScores, setShowBack, setShowFavs, showBack}}>
       <div className="App">
         <header className=""></header>
         <main>
           <Scores />
           { /*<Filters /> */ }
           <ShowBackFront />
+          <ShowFavsOnly />
           <sup>Current Card {currCard} of {cards.length-1}</sup>
         <i id="add-button" className="nav-buttons" onClick={addCard}>+<span> Add Card</span></i>
           <FlashCards  /> 
