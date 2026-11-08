@@ -21,9 +21,11 @@ const FlashCard = (props)=> {
     
     useEffect(() => {
         //console.log(props.index === currCard, props.index , currCard)
+        
         if(props.index === currCard){
             setTheStyle(defaultCardPosition);
             flipCard();
+            
         }else{
             setTheStyle(styleFolded);
             setFlipped(context.showBack)
@@ -37,7 +39,7 @@ const FlashCard = (props)=> {
     }, [currCard, context.showBack]);
 
     useEffect(()=>{
-        setFlipped(!context.showBack);
+       // setFlipped(!context.showBack);
     },[])
 
     const flipCard = () => {
