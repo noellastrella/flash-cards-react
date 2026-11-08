@@ -169,13 +169,21 @@ footer{
 
 #showBackFront{
   position: fixed;
-  top: 14em;
+  top: 10em;
   left: 2em;
 }
 
 
 #showFavsOnly{
   position: fixed;
-  top: 16em;
+  top: 12em;
+  left: 2em;
+}
+
+
+
+#showWrongOnly{
+  position: fixed;
+  top: 14em;
   left: 2em;
 }

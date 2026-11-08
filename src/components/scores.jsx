@@ -22,6 +22,7 @@ function Scores(props){
         if(e.correct=="no"){
             incorrect++;
         }
+
     });
 
     let answered = cards_answered>0 ? Math.round((correct/cards_answered)*100) : 0;

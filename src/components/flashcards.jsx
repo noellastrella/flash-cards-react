@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import FlashCard from './flashcard';
+import FlashCard from './flashcard.jsx';
 import { AppContext } from '../App.jsx';
 
 function FlashCards(props){

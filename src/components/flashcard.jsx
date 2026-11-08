@@ -3,8 +3,7 @@ import ContentEditable from 'react-contenteditable';
 import { AppContext } from '../App.jsx';
 
 const FlashCard = (props)=> {
-    //console.log("HELLO WORLD")
-    //let flipped = false;
+    
     const context = useContext(AppContext);
     let currCard = context.currCard;
 
@@ -19,7 +18,7 @@ const FlashCard = (props)=> {
     let incorrectIcon = context.getCardData(props.index).correct ==="no" ? "./images/wrong.svg":  "./images/wrong-off.svg";
     let correctIcon = context.getCardData(props.index).correct ==="yes" ? "./images/right.svg":  "./images/right-off.svg";
 
-
+    
     useEffect(() => {
         //console.log(props.index === currCard, props.index , currCard)
         if(props.index === currCard){
@@ -28,8 +27,9 @@ const FlashCard = (props)=> {
         }else{
             setTheStyle(styleFolded);
             setFlipped(context.showBack)
-            //if(context.showBack) forceHideFlip();
+            if(context.showBack) forceHideFlip();
         }
+        
         
         console.log("showBack", context.showBack)
         
@@ -43,7 +43,7 @@ const FlashCard = (props)=> {
     const flipCard = () => {
         setFlipped(!flipped);
         setCardStyle(flipped == true ? "flipped" : "");
-        console.log("FLIPPED! showBack: ", flipped, context.showBack);
+        console.log("FLIPPED! showBack: ", flipped, context.showBack, props.index);
     }
 
     const forceHideFlip = () =>{

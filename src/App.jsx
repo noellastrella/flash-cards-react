@@ -3,11 +3,12 @@ import {Template, cardsToAdd}  from './js/init';
 import FlashCards from './components/flashcards';
 import ShowBackFront from "./components/show-back-front";
 import ShowFavsOnly from "./components/show-favs-only";
+import ShowWrongOnly from "./components/show-wrong-only";
 
 import SaveLoadWidget from './components/save-load-widget';
 import CardSelector from './components/card-selector';
 import Scores from './components/scores';
-import Filters from './components/filters';
+
 
 import './css/App.scss';
 import './css/flashCard.scss';
@@ -17,20 +18,26 @@ export const AppContext = React.createContext();
 function App() {
   const [cards, modifyCards] = useState([]);
   const [filteredCardsArr, modifyFilteredCardsArray] = useState([]);
+  
   //const [cardsBackUp, setCardsBackUp] = useState([])
 
   const [fileName, setFileName] = useState('');
 //  const [keyPressed, setKeyPressed] = useState(false);
   const [currCard, setCurrCard] = useState(0);
   const [currFilteredCard, setCurrFilteredCard] = useState(0);
+  
 
-  const [filters, setFilters] = useState({});
   const [showBack, setShowBack] = useState(false);
 
   const [showFavs, setShowFavs] = useState(false);
 
-  //console.log("RENDERING APP")
+  const [showWrong, setShowWrong] = useState(false);
+
   // ------------------ START
+  useEffect(() => {
+    let tempCards = JSON.parse(JSON.stringify(cards));
+    populateFiltered(tempCards);
+  }, [showFavs, showWrong]); 
 
   useEffect(()=>{ 
     let localStorageCards = localStorage.getItem('flashCards');
@@ -45,16 +52,15 @@ function App() {
       
     }
 
-  },[]) // load CARDS
+  },[])
   
   // ------------------ populate filtered cards
 
     function populateFiltered(cardsToFilter){
       
       modifyFilteredCardsArray(cardsToFilter.filter((e,i)=>{
-        console.log(e)
         e.index = i;
-        return e.favorite == true;
+        return showFavs && e.favorite == true || showWrong && e.correct == "no";
       }));
     }
 
@@ -121,7 +127,7 @@ function App() {
 
   const arrowLeftPressed = useKeyPress("ArrowUp");
   const arrowRightPressed = useKeyPress("ArrowDown"); 
-  
+
   const metaPressed = useKeyPress("Meta"); 
 
   useEffect(() => {
@@ -150,13 +156,11 @@ function App() {
     const changeIndex=(e)=>{      
       let temp;
 
-
       temp = showFavs ? currFilteredCard : currCard;
-
 
       switch (e){
         case 'prev':          
-          if(showFavs){
+          if(showFavs || showWrong){
               console.log(filteredCardsArr,currFilteredCard)  
             temp = currFilteredCard > 0 ? currFilteredCard-1 : 0;
 
@@ -167,7 +171,7 @@ function App() {
         case 'next':
           //temp = temp<cardsFiltered.length-1? temp+=1:temp;
           console.log(filteredCardsArr,currFilteredCard)  
-          if(showFavs){
+          if(showFavs || showWrong){
               temp = currFilteredCard < filteredCardsArr.length- 1 ? currFilteredCard+1 : filteredCardsArr.length- 1 ;
           }else{
               temp = temp<cards.length-1? temp+=1:temp;
@@ -175,7 +179,7 @@ function App() {
           break;
         case 'random':
           //temp = Math.floor(Math.random()*cardsFiltered.length);
-          if(showFavs){
+          if(showFavs || showWrong){
             temp = Math.floor(Math.random()*filteredCardsArr.length);
           }else{
             temp = Math.floor(Math.random()*cards.length);
@@ -216,8 +220,6 @@ function App() {
       //saveLocal();
     }
   }  
-
-
 
   // ------------------ RESET CARDS
 
@@ -354,13 +356,9 @@ function App() {
     return cards[index];
   }
 
-  // ------------------ 
-
-
-
   // -------------------
   return (
-    <AppContext.Provider value={{cards:cards, editCard, deleteCard, currCard, setCurrCard, getCardData, changeIndex, resetCards, saveLocal, saveFile, loadFile, fileName, setFileName, setFilters, filters, resetScores, setShowBack, setShowFavs, showBack}}>
+    <AppContext.Provider value={{cards:cards, editCard, deleteCard, currCard, setCurrCard, getCardData, changeIndex, resetCards, saveLocal, saveFile, loadFile, fileName, setFileName, resetScores, setShowBack, setShowFavs, showBack, setShowWrong, showWrong}}>
       <div className="App">
         <header className=""></header>
         <main>
@@ -368,6 +366,7 @@ function App() {
           { /*<Filters /> */ }
           <ShowBackFront />
           <ShowFavsOnly />
+          <ShowWrongOnly />
           <sup>Current Card {currCard} of {cards.length-1}</sup>
         <i id="add-button" className="nav-buttons" onClick={addCard}>+<span> Add Card</span></i>
           <FlashCards  /> 
