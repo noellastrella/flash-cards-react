@@ -16,20 +16,18 @@ export const AppContext = React.createContext();
 
 function App() {
   const [cards, modifyCards] = useState([]);
-  const [favCardsArr, modifyFavCardsArray] = useState([]);
+  const [filteredCardsArr, modifyFilteredCardsArray] = useState([]);
   //const [cardsBackUp, setCardsBackUp] = useState([])
 
   const [fileName, setFileName] = useState('');
 //  const [keyPressed, setKeyPressed] = useState(false);
   const [currCard, setCurrCard] = useState(0);
-  const [currFavCard, setCurrFavCard] = useState(0);
+  const [currFilteredCard, setCurrFilteredCard] = useState(0);
 
   const [filters, setFilters] = useState({});
-  const [showBack, setShowBack] = useState(false)
+  const [showBack, setShowBack] = useState(false);
 
-  const [showFavs, setShowFavs] = useState(false)
-
-
+  const [showFavs, setShowFavs] = useState(false);
 
   //console.log("RENDERING APP")
   // ------------------ START
@@ -39,19 +37,28 @@ function App() {
     
     if(localStorageCards){
       modifyCards(JSON.parse(localStorageCards));
+      populateFiltered(JSON.parse(localStorageCards))
       //setCardsBackUp(JSON.parse(localStorageCards));
     }else{
       loadCards(cardsToAdd);
+      populateFiltered(cardsToAdd);
+      
     }
-console.log("test")
-    setFilters({
-      unlabeled : true,
-      incorrect : true,
-      correct   : true,
-      favorite  : true 
-    })
+
   },[]) // load CARDS
   
+  // ------------------ populate filtered cards
+
+    function populateFiltered(cardsToFilter){
+      
+      modifyFilteredCardsArray(cardsToFilter.filter((e,i)=>{
+        console.log(e)
+        e.index = i;
+        return e.favorite == true;
+      }));
+    }
+
+
   // ------------------ KEY PRESS HANDLER
 
     const useKeyPress = (targetKey) => {
@@ -137,38 +144,6 @@ console.log("test")
     }
     }, [metaPressed]);
   
-
-  // ------------------ FILTERS
-
-  const filterCards = ()=>{
-    console.log("running...");
-
-    let temp = cardsBackUp.filter((e)=>{
-        console.log(e);
-        let pass = false;
-        
-        if(filters.favorite)
-        
-        if(e.favorite && filters.favorite){
-            pass=true;
-        }
-
-        if(e.correct=="no" && filters.incorrect) pass=true;
-        
-        if(e.correct=="yes" && filters.correct) pass=true;
-        
-        if(!e.favorite && e.correct=="n/a" && filters.unlabeled) pass=true;
-        setCurrCard(0)
-        //console.log(">>",filters, `Fav Filter: ${filters.favorite} | obj fav: ${e.favorite} | correct:  ${e.correct}`, "PASS:", pass)
-        return pass;
-    })
-
-    console.log("XXXX", temp, cardsBackUp);
-    modifyCards(cards=>[])
-    temp.forEach(e=>{
-      modifyCards(temp=>[...temp,e])
-    })  
-}
   
   // ------------------ CHANGE INDEX
 
@@ -176,26 +151,24 @@ console.log("test")
       let temp;
 
 
-      temp = showFavs ? currFavCard : currCard;
+      temp = showFavs ? currFilteredCard : currCard;
 
 
       switch (e){
         case 'prev':          
           if(showFavs){
-              console.log(favCardsArr,currFavCard)  
-            temp = currFavCard > 0 ? currFavCard-1 : 0;
+              console.log(filteredCardsArr,currFilteredCard)  
+            temp = currFilteredCard > 0 ? currFilteredCard-1 : 0;
 
-              
-              
           }else{
               temp = temp>0?temp-=1:temp;
           }
           break;
         case 'next':
           //temp = temp<cardsFiltered.length-1? temp+=1:temp;
-          console.log(favCardsArr,currFavCard)  
+          console.log(filteredCardsArr,currFilteredCard)  
           if(showFavs){
-              temp = currFavCard < favCardsArr.length- 1 ? currFavCard+1 : favCardsArr.length- 1 ;
+              temp = currFilteredCard < filteredCardsArr.length- 1 ? currFilteredCard+1 : filteredCardsArr.length- 1 ;
           }else{
               temp = temp<cards.length-1? temp+=1:temp;
           } 
@@ -203,7 +176,7 @@ console.log("test")
         case 'random':
           //temp = Math.floor(Math.random()*cardsFiltered.length);
           if(showFavs){
-            temp = Math.floor(Math.random()*favCardsArr.length);
+            temp = Math.floor(Math.random()*filteredCardsArr.length);
           }else{
             temp = Math.floor(Math.random()*cards.length);
           }
@@ -220,8 +193,8 @@ console.log("test")
           break;
       }
       if(showFavs){
-        setCurrCard(favCardsArr[temp].index);
-        setCurrFavCard(temp);
+        setCurrCard(filteredCardsArr[temp].index);
+        setCurrFilteredCard(temp);
       }else{  
         setCurrCard(temp);
       }
@@ -305,14 +278,10 @@ console.log("test")
       alert("Error editing cards")
     }
 
-    modifyFavCardsArray(tempCards.filter((e,i)=>{
-      console.log(e)
-      e.index = i;
-      return e.favorite == true;
-    }));
+    populateFiltered(tempCards);
 
     console.log(cards)
-    console.log(favCardsArr)
+    console.log(filteredCardsArr)
 
     modifyCards(cards=>[]); //erase all cards
     loadCards(tempCards); //reload cards 
@@ -391,7 +360,7 @@ console.log("test")
 
   // -------------------
   return (
-    <AppContext.Provider value={{cards:cards, editCard, deleteCard, currCard, setCurrCard, getCardData, changeIndex, resetCards, saveLocal, saveFile, loadFile, fileName, setFileName, setFilters, filterCards, filters, resetScores, setShowBack, setShowFavs, showBack}}>
+    <AppContext.Provider value={{cards:cards, editCard, deleteCard, currCard, setCurrCard, getCardData, changeIndex, resetCards, saveLocal, saveFile, loadFile, fileName, setFileName, setFilters, filters, resetScores, setShowBack, setShowFavs, showBack}}>
       <div className="App">
         <header className=""></header>
         <main>
