@@ -4,11 +4,11 @@ import FlashCards from './components/flashcards';
 import ShowBackFront from "./components/show-back-front";
 import ShowFavsOnly from "./components/show-favs-only";
 import ShowWrongOnly from "./components/show-wrong-only";
+import ShowUnusedOnly from "./components/show-unused-only";
 
 import SaveLoadWidget from './components/save-load-widget';
 import CardSelector from './components/card-selector';
 import Scores from './components/scores';
-
 
 import './css/App.scss';
 import './css/flashCard.scss';
@@ -33,11 +33,14 @@ function App() {
 
   const [showWrong, setShowWrong] = useState(false);
 
+  const [showUnused, setShowUnused] = useState(false);
+
   // ------------------ START
   useEffect(() => {
     let tempCards = JSON.parse(JSON.stringify(cards));
+    console.log("processing filtered")
     populateFiltered(tempCards);
-  }, [showFavs, showWrong]); 
+  }, [showFavs, showWrong, showUnused]); 
 
   useEffect(()=>{ 
     let localStorageCards = localStorage.getItem('flashCards');
@@ -60,7 +63,11 @@ function App() {
       
       modifyFilteredCardsArray(cardsToFilter.filter((e,i)=>{
         e.index = i;
-        return showFavs && e.favorite == true || showWrong && e.correct == "no";
+        console.log()
+        if(showFavs && e.favorite == true || showWrong && e.correct == "no" || showUnused && e.correct == "n/a"){
+          //console.log(e.correct)
+        }
+        return ( (showFavs && e.favorite == true) || (showWrong && e.correct == "no") || (showUnused && e.correct == "n/a")) && e;
       }));
     }
 
@@ -95,27 +102,13 @@ function App() {
         }
       };
   
-      const metaHandler = ({ key }) => {
-        console.log(key)
-        if (key === targetKey) {
-          setKeyPressed(false)
-        }
-      };
-
       window.addEventListener("keydown", downHandler);
-      window.addEventListener("keyup", upHandler);
-      window.addEventListener("keydown", metaHandler);
-
-      //window.addEventListener("keyleft", rightHandler);
-      //window.addEventListener("keyright", downHandler);
+      window.addEventListener("keyup", upHandler);    
   
       return () => {
         window.removeEventListener("keydown", downHandler);
         window.removeEventListener("keyup", upHandler);
 
-        window.removeEventListener("Meta", metaHandler);
-        //window.removeEventListener("keyleft", leftHandler);
-        //window.removeEventListener("keyright", rightHandler);
       };
     }, [targetKey]);
   
@@ -128,7 +121,9 @@ function App() {
   const arrowLeftPressed = useKeyPress("ArrowUp");
   const arrowRightPressed = useKeyPress("ArrowDown"); 
 
-  const metaPressed = useKeyPress("Meta"); 
+  
+  const altPressed = useKeyPress("Alt"); 
+  const controlPressed = useKeyPress("Control"); 
 
   useEffect(() => {
   if (arrowLeftPressed) {
@@ -144,24 +139,25 @@ function App() {
 
 
   useEffect(() => {
-    if (metaPressed) {
+    if (controlPressed) {
       changeIndex("random");
       
     }
-    }, [metaPressed]);
+    }, [controlPressed]);
   
+
   
   // ------------------ CHANGE INDEX
 
     const changeIndex=(e)=>{      
       let temp;
 
-      temp = showFavs ? currFilteredCard : currCard;
+      temp = (showFavs || showWrong || showUnused) ? currFilteredCard : currCard;
 
       switch (e){
         case 'prev':          
-          if(showFavs || showWrong){
-              console.log(filteredCardsArr,currFilteredCard)  
+          if(showFavs || showWrong || showUnused){
+            console.log(filteredCardsArr,currFilteredCard)  
             temp = currFilteredCard > 0 ? currFilteredCard-1 : 0;
 
           }else{
@@ -171,7 +167,7 @@ function App() {
         case 'next':
           //temp = temp<cardsFiltered.length-1? temp+=1:temp;
           console.log(filteredCardsArr,currFilteredCard)  
-          if(showFavs || showWrong){
+          if(showFavs || showWrong || showUnused){
               temp = currFilteredCard < filteredCardsArr.length- 1 ? currFilteredCard+1 : filteredCardsArr.length- 1 ;
           }else{
               temp = temp<cards.length-1? temp+=1:temp;
@@ -179,7 +175,7 @@ function App() {
           break;
         case 'random':
           //temp = Math.floor(Math.random()*cardsFiltered.length);
-          if(showFavs || showWrong){
+          if(showFavs || showWrong || showUnused){
             temp = Math.floor(Math.random()*filteredCardsArr.length);
           }else{
             temp = Math.floor(Math.random()*cards.length);
@@ -196,7 +192,7 @@ function App() {
         default:
           break;
       }
-      if(showFavs){
+      if(showFavs || showWrong || showUnused){
         setCurrCard(filteredCardsArr[temp].index);
         setCurrFilteredCard(temp);
       }else{  
@@ -358,7 +354,7 @@ function App() {
 
   // -------------------
   return (
-    <AppContext.Provider value={{cards:cards, editCard, deleteCard, currCard, setCurrCard, getCardData, changeIndex, resetCards, saveLocal, saveFile, loadFile, fileName, setFileName, resetScores, setShowBack, setShowFavs, showBack, setShowWrong, showWrong}}>
+    <AppContext.Provider value={{cards:cards, editCard, deleteCard, currCard, setCurrCard, getCardData, changeIndex, resetCards, saveLocal, saveFile, loadFile, fileName, setFileName, resetScores, setShowBack, setShowFavs, showBack, setShowWrong, showWrong, setShowUnused, showUnused}}>
       <div className="App">
         <header className=""></header>
         <main>
@@ -367,6 +363,7 @@ function App() {
           <ShowBackFront />
           <ShowFavsOnly />
           <ShowWrongOnly />
+          <ShowUnusedOnly />
           <sup>Current Card {currCard} of {cards.length-1}</sup>
         <i id="add-button" className="nav-buttons" onClick={addCard}>+<span> Add Card</span></i>
           <FlashCards  /> 

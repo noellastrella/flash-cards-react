@@ -19,6 +19,9 @@ const FlashCard = (props)=> {
     let correctIcon = context.getCardData(props.index).correct ==="yes" ? "./images/right.svg":  "./images/right-off.svg";
 
     
+
+    
+    
     useEffect(() => {
         //console.log(props.index === currCard, props.index , currCard)
         
@@ -92,26 +95,53 @@ const FlashCard = (props)=> {
 
       // ------------------ KEY PRESS HANDLER
 
-      const useKeyPress = (targetKey) => {
-        useEffect(() => { 
-        const downHandler = ({ key }) => {
-            if(context.currCard == props.index){
-                if (key === "Alt") {
-                    console.log("FLIP!!!!")
-                    flipCard();
-                }
-                console.log(key)
-            }
-        };
+
+    //*
+    const [keyPressed, setKeyPressed] = useState(false);
+        const useKeyPress = (targetKey) => {
+                
+          useEffect(() => { 
+                const downHandler = ({ key }) => {
+                    
+                    if (key === targetKey) {
+                        setKeyPressed(true);
+                    }
+                };
+                const upHandler = ({ key }) => {
+                    if (key === targetKey) {
+                        setKeyPressed(false);
+                    }
+                };
     
-        window.addEventListener("keydown", downHandler);
-        return () => {
-          window.removeEventListener("keydown", downHandler);
-        };
-      }, [context.currCard]);    
-    };
+          window.addEventListener("keydown", downHandler);
+          window.addEventListener("keyup", upHandler);
+      
+          return () => {
+            window.removeEventListener("keydown", downHandler);
+            window.removeEventListener("keyup", upHandler);
+    
+          };
+        }, [targetKey]);
+      
+        return keyPressed;
+      };
+
+    const altPressed = useKeyPress("Alt"); 
   
-    useKeyPress();
+    useEffect(() => {
+        if (altPressed) {
+            if(context.currCard == props.index){
+                    //setKeyPressed(false);
+                    flipCard();
+                    setFlipped(!flipped)
+                    console.log("FLIP!!!!", flipped)
+                
+            }
+      
+        }
+    }, [altPressed]);
+
+    //*/
 
     // =========================================
    
